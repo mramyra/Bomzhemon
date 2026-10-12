@@ -1,0 +1,796 @@
+{
+ "rat": {
+  "name": "Крыса",
+  "types": [
+   "rodent"
+  ],
+  "base": {
+   "hp": 40,
+   "atk": 50,
+   "def": 35,
+   "spa": 25,
+   "spd": 30,
+   "spe": 60
+  },
+  "catch_rate": 255,
+  "base_exp": 51,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    5,
+    "bite"
+   ],
+   [
+    10,
+    "shawarma"
+   ],
+   [
+    14,
+    "rat_scuffle"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 16,
+    "into": "rat_boss"
+   }
+  ],
+  "desc": "Хозяйка свалки. Берёт числом, а не умением."
+ },
+ "rat_boss": {
+  "name": "Крыса-босс",
+  "types": [
+   "rodent"
+  ],
+  "base": {
+   "hp": 70,
+   "atk": 85,
+   "def": 60,
+   "spa": 40,
+   "spd": 50,
+   "spe": 70
+  },
+  "catch_rate": 90,
+  "base_exp": 140,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "rat_scuffle"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    1,
+    "shawarma"
+   ],
+   [
+    22,
+    "expired"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Жирная, наглая, при галстуке из проволоки."
+ },
+ "rat_king": {
+  "name": "Крысиный король",
+  "types": [
+   "rodent",
+   "poison"
+  ],
+  "base": {
+   "hp": 100,
+   "atk": 95,
+   "def": 80,
+   "spa": 70,
+   "spd": 80,
+   "spe": 65
+  },
+  "catch_rate": 20,
+  "base_exp": 220,
+  "learnset": [
+   [
+    1,
+    "rat_scuffle"
+   ],
+   [
+    1,
+    "expired"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    1,
+    "play_dead"
+   ],
+   [
+    30,
+    "scandal"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Пять крыс, одна судьба. Получается только крафтом."
+ },
+ "mouse": {
+  "name": "Мышь",
+  "types": [
+   "rodent"
+  ],
+  "base": {
+   "hp": 38,
+   "atk": 48,
+   "def": 32,
+   "spa": 35,
+   "spd": 34,
+   "spe": 72
+  },
+  "catch_rate": 255,
+  "base_exp": 40,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    5,
+    "scratch"
+   ],
+   [
+    9,
+    "bite"
+   ],
+   [
+    13,
+    "rat_scuffle"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "item",
+    "item": "moldy_cheese",
+    "into": "mouse_mutant"
+   }
+  ],
+  "desc": "Мелкая, шустрая и всегда при крошках."
+ },
+ "mouse_mutant": {
+  "name": "Мышь-мутант",
+  "types": [
+   "rodent",
+   "poison"
+  ],
+  "base": {
+   "hp": 60,
+   "atk": 70,
+   "def": 45,
+   "spa": 65,
+   "spd": 45,
+   "spe": 85
+  },
+  "catch_rate": 90,
+  "base_exp": 130,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "cologne"
+   ],
+   [
+    1,
+    "rat_scuffle"
+   ],
+   [
+    1,
+    "squeak"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Сыр был с историей. Мышь теперь тоже."
+ },
+ "hedgehog": {
+  "name": "Ёж",
+  "types": [
+   "rodent"
+  ],
+  "base": {
+   "hp": 50,
+   "atk": 50,
+   "def": 75,
+   "spa": 35,
+   "spd": 50,
+   "spe": 30
+  },
+  "catch_rate": 120,
+  "base_exp": 65,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "play_dead"
+   ],
+   [
+    8,
+    "bite"
+   ],
+   [
+    15,
+    "rat_scuffle"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "По версии разработчиков - грызун. Спорить бесполезно."
+ },
+ "pigeon": {
+  "name": "Голубь",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 40,
+   "atk": 45,
+   "def": 40,
+   "spa": 35,
+   "spd": 35,
+   "spe": 56
+  },
+  "catch_rate": 255,
+  "base_exp": 50,
+  "learnset": [
+   [
+    1,
+    "peck"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    8,
+    "dive_bomb"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 15,
+    "into": "fat_pigeon"
+   }
+  ],
+  "desc": "Знает, где у вас бутерброд."
+ },
+ "fat_pigeon": {
+  "name": "Жирный голубь",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 70,
+   "atk": 75,
+   "def": 65,
+   "spa": 55,
+   "spd": 55,
+   "spe": 45
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "peck"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    20,
+    "shawarma"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "item",
+    "item": "pigeon_costume",
+    "into": "pigeon_king"
+   }
+  ],
+  "desc": "Давно не летает. Не хочет, говорит."
+ },
+ "pigeon_king": {
+  "name": "Голубиный король",
+  "types": [
+   "bird",
+   "human"
+  ],
+  "base": {
+   "hp": 85,
+   "atk": 78,
+   "def": 76,
+   "spa": 66,
+   "spd": 78,
+   "spe": 64
+  },
+  "catch_rate": 30,
+  "base_exp": 200,
+  "learnset": [
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    1,
+    "balcony"
+   ],
+   [
+    1,
+    "scandal"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Бомж в костюме голубя. Или голубь в костюме бомжа. Он сам уже не помнит."
+ },
+ "cockroach": {
+  "name": "Таракан",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 40,
+   "atk": 50,
+   "def": 60,
+   "spa": 45,
+   "spd": 40,
+   "spe": 55
+  },
+  "catch_rate": 255,
+  "base_exp": 45,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    7,
+    "gnaw"
+   ],
+   [
+    11,
+    "swarm"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 16,
+    "into": "cockroach_vet"
+   }
+  ],
+  "desc": "Переживёт всех. Включая автора."
+ },
+ "cockroach_vet": {
+  "name": "Таракан-ветеран",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 70,
+   "atk": 70,
+   "def": 90,
+   "spa": 70,
+   "spd": 60,
+   "spe": 60
+  },
+  "catch_rate": 90,
+  "base_exp": 125,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    1,
+    "swarm"
+   ],
+   [
+    1,
+    "cologne"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Усы - как у дембеля."
+ },
+ "flea": {
+  "name": "Блоха",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 35,
+   "atk": 60,
+   "def": 38,
+   "spa": 40,
+   "spd": 35,
+   "spe": 95
+  },
+  "catch_rate": 255,
+  "base_exp": 45,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    10,
+    "bite"
+   ],
+   [
+    16,
+    "swarm"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Не поймать, пока не уснёт. Ты тоже ей не нравишься."
+ },
+ "stray_dog": {
+  "name": "Дворняга",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 50,
+   "atk": 55,
+   "def": 42,
+   "spa": 35,
+   "spd": 40,
+   "spe": 58
+  },
+  "catch_rate": 190,
+  "base_exp": 60,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "bark"
+   ],
+   [
+    6,
+    "snarl"
+   ],
+   [
+    20,
+    "chase"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 16,
+    "into": "shepherd"
+   }
+  ],
+  "desc": "Верный друг. Если покормить."
+ },
+ "shepherd": {
+  "name": "Овчарка-бродяга",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 80,
+   "atk": 90,
+   "def": 70,
+   "spa": 45,
+   "spd": 60,
+   "spe": 70
+  },
+  "catch_rate": 90,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "bark"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    1,
+    "chase"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Бывшая служебная. Теперь вольный художник."
+ },
+ "street_cat": {
+  "name": "Дворовый кот",
+  "types": [
+   "cat"
+  ],
+  "base": {
+   "hp": 48,
+   "atk": 55,
+   "def": 40,
+   "spa": 35,
+   "spd": 45,
+   "spe": 70
+  },
+  "catch_rate": 190,
+  "base_exp": 60,
+  "learnset": [
+   [
+    1,
+    "scratch"
+   ],
+   [
+    1,
+    "hiss"
+   ],
+   [
+    7,
+    "claws"
+   ],
+   [
+    20,
+    "pounce"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 16,
+    "into": "bandit_cat"
+   }
+  ],
+  "desc": "Территорию не делит. Территория - его."
+ },
+ "bandit_cat": {
+  "name": "Кот-бандит",
+  "types": [
+   "cat"
+  ],
+  "base": {
+   "hp": 68,
+   "atk": 76,
+   "def": 55,
+   "spa": 45,
+   "spd": 55,
+   "spe": 78
+  },
+  "catch_rate": 90,
+  "base_exp": 140,
+  "learnset": [
+   [
+    1,
+    "claws"
+   ],
+   [
+    1,
+    "hiss"
+   ],
+   [
+    1,
+    "shawarma"
+   ],
+   [
+    1,
+    "scratch"
+   ],
+   [
+    34,
+    "pounce"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Шрам на ухе, косой взгляд, ни одной прописки."
+ },
+ "black_cat": {
+  "name": "Чёрный кот",
+  "types": [
+   "cat",
+   "ghost"
+  ],
+  "base": {
+   "hp": 50,
+   "atk": 65,
+   "def": 45,
+   "spa": 60,
+   "spd": 50,
+   "spe": 75
+  },
+  "catch_rate": 90,
+  "base_exp": 100,
+  "learnset": [
+   [
+    1,
+    "scratch"
+   ],
+   [
+    1,
+    "whisper"
+   ],
+   [
+    7,
+    "hiss"
+   ],
+   [
+    11,
+    "delirium"
+   ],
+   [
+    15,
+    "nap"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Перешёл дорогу. Тебе. Специально."
+ },
+ "toad": {
+  "name": "Жаба помойная",
+  "types": [
+   "poison"
+  ],
+  "base": {
+   "hp": 60,
+   "atk": 50,
+   "def": 55,
+   "spa": 65,
+   "spd": 55,
+   "spe": 35
+  },
+  "catch_rate": 120,
+  "base_exp": 70,
+  "learnset": [
+   [
+    1,
+    "cologne"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    8,
+    "shawarma"
+   ],
+   [
+    16,
+    "expired"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Сидит в луже и смотрит. Лучше не целовать."
+ },
+ "granny": {
+  "name": "Бабка с авоськой",
+  "types": [
+   "human"
+  ],
+  "base": {
+   "hp": 70,
+   "atk": 65,
+   "def": 55,
+   "spa": 60,
+   "spd": 70,
+   "spe": 60
+  },
+  "catch_rate": 75,
+  "base_exp": 80,
+  "learnset": [
+   [
+    1,
+    "cuff"
+   ],
+   [
+    1,
+    "balcony"
+   ],
+   [
+    8,
+    "slipper"
+   ],
+   [
+    13,
+    "scandal"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Знает всё про всех. И про тебя тоже."
+ },
+ "tramp": {
+  "name": "Одетый бомж",
+  "types": [
+   "human"
+  ],
+  "base": {
+   "hp": 70,
+   "atk": 70,
+   "def": 60,
+   "spa": 45,
+   "spd": 60,
+   "spe": 50
+  },
+  "catch_rate": 60,
+  "base_exp": 95,
+  "learnset": [
+   [
+    1,
+    "cuff"
+   ],
+   [
+    1,
+    "cologne"
+   ],
+   [
+    6,
+    "balcony"
+   ],
+   [
+    12,
+    "slipper"
+   ],
+   [
+    18,
+    "delirium"
+   ],
+   [
+    24,
+    "scandal"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Три тулупа сверху - значит, всё серьёзно."
+ }
+}

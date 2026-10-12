@@ -1,0 +1,9 @@
+{
+  "box":            {"name": "Картонная коробка",   "kind": "catch",     "bonus": 1.0, "desc": "Главный инструмент ловца."},
+  "big_box":        {"name": "Большая коробка",     "kind": "catch",     "bonus": 1.5, "desc": "Из-под холодильника. Вместительная."},
+  "bread_crust":    {"name": "Корка хлеба",         "kind": "heal",      "amount": 20, "desc": "Восстанавливает 20 HP."},
+  "instant_noodles":{"name": "Бич-пакет",           "kind": "heal",      "amount": 60, "desc": "Восстанавливает 60 HP."},
+  "milk":           {"name": "Молоко за вредность", "kind": "cure",      "cures": ["psn"], "desc": "Лечит отравление."},
+  "moldy_cheese":   {"name": "Заплесневелый сыр",   "kind": "evolution", "desc": "Кое-кто от него в восторге."},
+  "pigeon_costume": {"name": "Костюм голубя",       "kind": "evolution", "desc": "Сидит как влитой. Не спрашивай."}
+}

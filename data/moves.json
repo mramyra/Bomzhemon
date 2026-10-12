@@ -1,0 +1,332 @@
+{
+ "gnaw": {
+  "name": "Грызть",
+  "type": "rodent",
+  "category": "physical",
+  "power": 45,
+  "accuracy": 100,
+  "pp": 35,
+  "priority": 0,
+  "effect": {}
+ },
+ "rat_scuffle": {
+  "name": "Крысиная возня",
+  "type": "rodent",
+  "category": "physical",
+  "power": 70,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "squeak": {
+  "name": "Писк",
+  "type": "rodent",
+  "category": "status",
+  "power": 0,
+  "accuracy": 100,
+  "pp": 30,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "foe",
+    "stat": "def",
+    "stages": -1
+   }
+  }
+ },
+ "play_dead": {
+  "name": "Притвориться дохлым",
+  "type": "rodent",
+  "category": "status",
+  "power": 0,
+  "accuracy": null,
+  "pp": 20,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "self",
+    "stat": "def",
+    "stages": 2
+   }
+  }
+ },
+ "scratch": {
+  "name": "Царапка",
+  "type": "cat",
+  "category": "physical",
+  "power": 40,
+  "accuracy": 100,
+  "pp": 35,
+  "priority": 0,
+  "effect": {}
+ },
+ "claws": {
+  "name": "Когти",
+  "type": "cat",
+  "category": "physical",
+  "power": 55,
+  "accuracy": 100,
+  "pp": 25,
+  "priority": 0,
+  "effect": {}
+ },
+ "hiss": {
+  "name": "Шипение",
+  "type": "cat",
+  "category": "special",
+  "power": 45,
+  "accuracy": 100,
+  "pp": 25,
+  "priority": 0,
+  "effect": {
+   "flinch": 15
+  }
+ },
+ "pounce": {
+  "name": "Прыжок из-за угла",
+  "type": "cat",
+  "category": "physical",
+  "power": 75,
+  "accuracy": 90,
+  "pp": 15,
+  "priority": 0,
+  "effect": {}
+ },
+ "bite": {
+  "name": "Укус",
+  "type": "dog",
+  "category": "physical",
+  "power": 55,
+  "accuracy": 100,
+  "pp": 25,
+  "priority": 0,
+  "effect": {}
+ },
+ "bark": {
+  "name": "Лай",
+  "type": "dog",
+  "category": "special",
+  "power": 40,
+  "accuracy": 100,
+  "pp": 30,
+  "priority": 0,
+  "effect": {}
+ },
+ "snarl": {
+  "name": "Оскал",
+  "type": "dog",
+  "category": "status",
+  "power": 0,
+  "accuracy": 100,
+  "pp": 30,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "foe",
+    "stat": "atk",
+    "stages": -1
+   }
+  }
+ },
+ "chase": {
+  "name": "Погоня",
+  "type": "dog",
+  "category": "physical",
+  "power": 85,
+  "accuracy": 90,
+  "pp": 10,
+  "priority": 0,
+  "effect": {}
+ },
+ "cologne": {
+  "name": "Тройной одеколон",
+  "type": "poison",
+  "category": "special",
+  "power": 50,
+  "accuracy": 100,
+  "pp": 25,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "psn",
+    "chance": 30
+   }
+  }
+ },
+ "shawarma": {
+  "name": "Гнилая шаурма",
+  "type": "poison",
+  "category": "special",
+  "power": 65,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "psn",
+    "chance": 40
+   }
+  }
+ },
+ "expired": {
+  "name": "Просрочка",
+  "type": "poison",
+  "category": "special",
+  "power": 85,
+  "accuracy": 90,
+  "pp": 10,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "psn",
+    "chance": 30
+   }
+  }
+ },
+ "peck": {
+  "name": "Клевок",
+  "type": "bird",
+  "category": "physical",
+  "power": 40,
+  "accuracy": 100,
+  "pp": 35,
+  "priority": 0,
+  "effect": {}
+ },
+ "dive_bomb": {
+  "name": "Налёт",
+  "type": "bird",
+  "category": "physical",
+  "power": 65,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "droppings": {
+  "name": "Помёт",
+  "type": "bird",
+  "category": "special",
+  "power": 55,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "sting": {
+  "name": "Жало",
+  "type": "bug",
+  "category": "physical",
+  "power": 55,
+  "accuracy": 100,
+  "pp": 35,
+  "priority": 0,
+  "effect": {}
+ },
+ "swarm": {
+  "name": "Рой",
+  "type": "bug",
+  "category": "special",
+  "power": 80,
+  "accuracy": 95,
+  "pp": 15,
+  "priority": 0,
+  "effect": {}
+ },
+ "crawl": {
+  "name": "Ползком",
+  "type": "bug",
+  "category": "status",
+  "power": 0,
+  "accuracy": 100,
+  "pp": 30,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "foe",
+    "stat": "spe",
+    "stages": -1
+   }
+  }
+ },
+ "whisper": {
+  "name": "Хрип из подворотни",
+  "type": "ghost",
+  "category": "special",
+  "power": 60,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "delirium": {
+  "name": "Белочка",
+  "type": "ghost",
+  "category": "special",
+  "power": 50,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "confuse": 30
+  }
+ },
+ "nap": {
+  "name": "Тихий час",
+  "type": "ghost",
+  "category": "status",
+  "power": 0,
+  "accuracy": 60,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "slp",
+    "chance": 100
+   }
+  }
+ },
+ "cuff": {
+  "name": "Подзатыльник",
+  "type": "human",
+  "category": "physical",
+  "power": 40,
+  "accuracy": 100,
+  "pp": 35,
+  "priority": 0,
+  "effect": {}
+ },
+ "slipper": {
+  "name": "Тапком",
+  "type": "human",
+  "category": "physical",
+  "power": 65,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "balcony": {
+  "name": "Крик с балкона",
+  "type": "human",
+  "category": "special",
+  "power": 60,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {
+   "flinch": 20
+  }
+ },
+ "scandal": {
+  "name": "Скандал",
+  "type": "human",
+  "category": "physical",
+  "power": 85,
+  "accuracy": 85,
+  "pp": 10,
+  "priority": 0,
+  "effect": {}
+ }
+}
