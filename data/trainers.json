@@ -6,8 +6,12 @@
   "reward": 120,
   "party": [
    [
-    "granny",
+    "kotenok",
     7
+   ],
+   [
+    "gusenitsa",
+    6
    ]
   ],
   "intro": [
@@ -25,12 +29,12 @@
   "reward": 150,
   "party": [
    [
-    "tramp",
+    "lisenok",
     8
    ],
    [
-    "mouse",
-    7
+    "enot",
+    8
    ]
   ],
   "intro": [
@@ -49,20 +53,20 @@
   "badge": "badge_dump",
   "party": [
    [
-    "rat",
+    "krysa",
     11
    ],
    [
-    "mouse",
+    "khomechennok",
     12
    ],
    [
-    "hedgehog",
-    13
+    "rytsekrys",
+    14
    ],
    [
-    "rat_boss",
-    15
+    "khomyak",
+    16
    ]
   ],
   "intro": [

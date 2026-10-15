@@ -73,6 +73,10 @@ class GameData:
                     errs.append(f"species {sid}: эволюция в {ev['into']}")
                 if ev["method"] == "item" and ev["item"] not in self.items:
                     errs.append(f"species {sid}: предмет {ev['item']}")
+                if ev["method"] == "trade" and ev["partner"] not in self.species:
+                    errs.append(f"species {sid}: партнёр по обмену {ev['partner']}")
+                if ev["method"] not in ("level", "item", "trade"):
+                    errs.append(f"species {sid}: неизвестный метод эволюции {ev['method']}")
             if not any(l == 1 for l, _ in s["learnset"]):
                 errs.append(f"species {sid}: нет приёмов на 1 уровне")
         for fid in self.fusions:
@@ -89,6 +93,8 @@ class GameData:
             for e in d["encounters"]:
                 if e["species"] not in self.species:
                     errs.append(f"district {did}: {e['species']}")
+                elif self.species[e["species"]].get("legendary"):
+                    errs.append(f"district {did}: легендарное {e['species']} в таблице случайных встреч")
             for i in d["item_spawns"]:
                 if i["item"] not in self.items:
                     errs.append(f"district {did}: item {i['item']}")

@@ -3,7 +3,7 @@
 Требования к карте в Tiled (Tile Layer Format = CSV, размер тайла 32x32):
   - тайловый слой "ground" (обязателен); необязательный "top" (рисуется поверх игрока, коллизий нет)
   - группа объектов "objects": прямоугольники 32x32 с полем Type (class):
-      player_start, barrel, dumpster, item_spot, trainer, leader
+      player_start, barrel, dumpster, item_spot, trainer, leader, trader (Меняла)
     у trainer/leader свойство trainer_id (ключ из data/trainers.json), свойство facing (up/down/left/right)
   - свойства тайлов в тайлсете: solid (bool) - нельзя пройти; encounter (bool) - здесь встречаются существа
 """
@@ -11,7 +11,7 @@ import json
 from collections import deque
 from pathlib import Path
 
-BLOCKING = {"barrel", "dumpster", "trainer", "leader"}
+BLOCKING = {"barrel", "dumpster", "trainer", "leader", "trader"}
 DIRS = {"up": (0, -1), "down": (0, 1), "left": (-1, 0), "right": (1, 0)}
 
 

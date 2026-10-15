@@ -10,6 +10,8 @@ STATUS_TAG = {"psn": "ЯД", "brn": "ОЖ", "par": "ТРМ", "slp": "СОН"}
 
 
 class BattleScene(Scene):
+    blocks_console = True   # во время боя консоль не открывается
+
     def __init__(self, app, battle: Battle, on_done):
         super().__init__(app)
         self.b, self.on_done = battle, on_done

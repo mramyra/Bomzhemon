@@ -164,6 +164,10 @@ def make(seed):
         for tid in ("granny_zina", "tramp_petya"):
             x, y = cand.pop()
             objs.append(("trainer", tid, x, y, {"trainer_id": tid, "facing": r.choice(["up", "down", "left", "right"])}))
+        near = [c for c in cand if 6 <= abs(c[0] - start[0]) + abs(c[1] - start[1]) <= 14]
+        x, y = near[0] if near else cand[0]
+        cand.remove((x, y))
+        objs.append(("trader", "Меняла", x, y, {}))
         for _ in range(8):
             x, y = cand.pop()
             objs.append(("dumpster", "dumpster", x, y, {}))

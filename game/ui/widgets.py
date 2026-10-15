@@ -25,6 +25,15 @@ def font(size=16, bold=False):
     return _fonts[key]
 
 
+_mono = {}
+
+
+def mono(size=12):
+    if size not in _mono:
+        _mono[size] = pygame.font.SysFont("consolas,couriernew,dejavusansmono,liberationmono,monospace", size)
+    return _mono[size]
+
+
 def text(surf, s, x, y, size=16, color=INK, bold=False):
     surf.blit(font(size, bold).render(str(s), True, color), (x, y))
 

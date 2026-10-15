@@ -1,0 +1,67 @@
+{
+ "version": 1,
+ "party": [
+  {
+   "species": "rat",
+   "level": 5,
+   "exp": 157,
+   "hp": 19,
+   "status": null,
+   "status_turns": 0,
+   "nickname": null,
+   "moves": [
+    {
+     "id": "gnaw",
+     "pp": 33,
+     "max_pp": 35
+    },
+    {
+     "id": "squeak",
+     "pp": 30,
+     "max_pp": 30
+    },
+    {
+     "id": "bite",
+     "pp": 25,
+     "max_pp": 25
+    }
+   ],
+   "pending_moves": []
+  }
+ ],
+ "storage": [],
+ "bag": {
+  "box": 7,
+  "bread_crust": 1
+ },
+ "money": 0,
+ "badges": [],
+ "seen": [
+  "flea",
+  "rat"
+ ],
+ "caught": [
+  "rat"
+ ],
+ "defeated": [],
+ "pos": {
+  "map": "dump",
+  "x": 19,
+  "y": 17
+ },
+ "flags": {
+  "picked": [
+   24,
+   28
+  ],
+  "opened": [
+   6
+  ],
+  "checkpoint": [
+   4,
+   3
+  ]
+ },
+ "seed": 490705849,
+ "play_seconds": 36.03499999999914
+}

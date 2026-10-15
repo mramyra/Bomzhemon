@@ -15,6 +15,14 @@ def item_evolution(creature, item_id):
     return None
 
 
+def trade_evolution(creature, given_species_id):
+    """Существо получено в обмен на существо вида given_species_id: во что оно эволюционирует (или None)."""
+    for ev in creature.species["evolutions"]:
+        if ev["method"] == "trade" and ev["partner"] == given_species_id:
+            return ev["into"]
+    return None
+
+
 def evolve(data, creature, into_id):
     """Превращает существо на месте. Сохраняет долю HP, приёмы и опыт."""
     ratio = creature.hp / creature.max_hp

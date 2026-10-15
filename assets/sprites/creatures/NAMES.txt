@@ -1,0 +1,45 @@
+# id -> имя (для файлов спрайтов: assets/sprites/creatures/<id>.png)
+khomechennok      Хомеченнок          rodent
+khomyak           Хомяк               rodent
+khomemertv        Хомемертв           ghost/rodent
+shchenok          Щенок               dog
+pes               Пес                 dog
+volchara          Волчара             dog
+kotenok           Котёнок             cat
+kot               Кот                 cat
+beshekot          Бешекот             cat/poison
+yaitso            Яйцо                bird
+ptenets           Птенец              bird
+golub             Голубь              bird
+goluvin           Голувин             bird/rodent
+strannoe_yaitso   Странное яйцо       bird
+pleshinets        Плешинец            bird
+popugaeshche      Попугаеще           bird
+lisenok           Лисенок             dog
+lisitsa           Лисица              dog
+enot              Енот                dog
+rytsenot          Рыценот             dog/human
+tarakan           Таракан             bug
+tararoy           Тарарой             bug
+gusenitsa         Гусеница            bug
+kokonishche       Коконище            bug
+babakach          Бабакач             bug/human
+mol               Моль                bug
+nedopchel         Недопчел            bug
+pchel             Пчел                bug
+boevoypchel       Боевойпчел          bug/poison
+korolevchel       Королевчел          bug
+pleshipes         Плешипес            dog
+siamsobek         Сиамсобек           dog/cat
+cheremshkot       Черемшкот           cat
+kotopes           Котопес             cat/dog
+golubiny_korol    Голубиный король    bird/human  (легендарное)
+bingus            Бингус              cat  (легендарное)
+belochka          Белочка             rodent/ghost  (легендарное)
+dikiy             Дикий               human
+krysa             Крыса               rodent
+spidkrys          Спидкрыс            rodent
+rytsekrys         Рыцекрыс            rodent/human
+krysiny_korol     Крысиный король     rodent/poison
+krysolet          Крысолет            rodent/bird
+gniekrys          Гниекрыс            poison/rodent

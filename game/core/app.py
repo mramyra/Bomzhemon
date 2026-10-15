@@ -71,6 +71,16 @@ class App:
                 if e.type == pygame.KEYDOWN and e.key == pygame.K_F10:
                     self.integer_scale = not self.integer_scale
                     continue
+                top = self.stack[-1] if self.stack else None
+                if top is not None and getattr(top, "wants_text", False):   # консоль: сырой ввод текста
+                    if e.type == pygame.KEYDOWN:
+                        top.on_key(e)
+                    continue
+                if e.type == pygame.KEYDOWN and e.key in (pygame.K_BACKQUOTE, pygame.K_F1) and top is not None and not getattr(top, "blocks_console", False):
+                    from game.scenes.console_scene import ConsoleScene
+                    self.held.clear()
+                    self.push(ConsoleScene(self))
+                    continue
                 a, down = key_action(e)
                 if a in ("up", "down", "left", "right"):
                     (self.held.add if down else self.held.discard)(a)

@@ -11,7 +11,8 @@
 import math
 import random
 
-from game.battle.creature import STAGE_KEYS, exp_for_level, MAX_LEVEL
+from game.battle.creature import STAGE_KEYS
+from game.systems import leveling
 
 STATUS_TEXT = {"psn": "отравился", "brn": "обжёгся", "par": "затрясся (тремор)", "slp": "отключился"}
 STAGE_TEXT = {"atk": "Атака", "def": "Защита", "spa": "Спец. атака", "spd": "Спец. защита", "spe": "Скорость"}
@@ -330,17 +331,14 @@ class Battle:
         share = max(1, total // len(winners))
         for c in winners:
             self.msg(ev, f"{c.name} получает {share} опыта.")
-            c.exp += share
-            while c.level < MAX_LEVEL and c.exp >= exp_for_level(c.level + 1):
-                c.level_up()
-                self.msg(ev, f"{c.name} вырос до {c.level} уровня!")
-                if c is self.player.mon:
-                    ev.append({"t": "level", **self.snapshot(self.player)})
-                for lv, mv in c.species["learnset"]:
-                    if lv == c.level and mv not in [m["id"] for m in c.moves]:
-                        ok = c.learn(self.data, mv)
-                        name = self.data.moves[mv]["name"]
-                        self.msg(ev, f"{c.name} выучил «{name}»!" if ok else f"{c.name} хочет выучить «{name}», но голова забита (4 приёма).")
+            for kind, val in leveling.apply_exp(self.data, c, share):
+                if kind == "level":
+                    self.msg(ev, f"{c.name} вырос до {val} уровня!")
+                    continue
+                name = self.data.moves[val]["name"]
+                self.msg(ev, f"{c.name} выучил «{name}»!" if kind == "learned" else f"{c.name} хочет выучить «{name}», но голова забита (4 приёма).")
+            if c is self.player.mon:
+                ev.append({"t": "level", **self.snapshot(self.player)})
 
     def _finish(self, result, ev):
         self.over, self.result = True, result

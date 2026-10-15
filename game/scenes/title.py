@@ -6,7 +6,7 @@ from game.systems.state import PlayerState
 from game.ui.sprites import creature_sprite
 from game.ui.widgets import INK, PAPER, Menu, panel, text
 
-STARTERS = ["rat", "stray_dog", "street_cat"]
+STARTERS = ["khomechennok", "shchenok", "kotenok"]
 
 
 class TitleScene(Scene):
@@ -26,9 +26,9 @@ class TitleScene(Scene):
             self.app.replace(WorldScene(self.app))
         elif it == "Отладочный хаб":
             d, st = self.app.data, PlayerState()
-            st.add_creature(d.make_creature("stray_dog", 12))
-            st.add_creature(d.make_creature("rat", 10))
-            st.bag.update({"box": 10, "bread_crust": 3, "moldy_cheese": 1, "pigeon_costume": 1})
+            st.add_creature(d.make_creature("shchenok", 12))
+            st.add_creature(d.make_creature("krysa", 10))
+            st.bag.update({"box": 10, "bread_crust": 3, "palto": 1, "bin_lid": 1, "syringe": 1})
             self.app.state = st
             self.app.replace(HubScene(self.app))
         else:

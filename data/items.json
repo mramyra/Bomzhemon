@@ -1,9 +1,69 @@
 {
-  "box":            {"name": "Картонная коробка",   "kind": "catch",     "bonus": 1.0, "desc": "Главный инструмент ловца."},
-  "big_box":        {"name": "Большая коробка",     "kind": "catch",     "bonus": 1.5, "desc": "Из-под холодильника. Вместительная."},
-  "bread_crust":    {"name": "Корка хлеба",         "kind": "heal",      "amount": 20, "desc": "Восстанавливает 20 HP."},
-  "instant_noodles":{"name": "Бич-пакет",           "kind": "heal",      "amount": 60, "desc": "Восстанавливает 60 HP."},
-  "milk":           {"name": "Молоко за вредность", "kind": "cure",      "cures": ["psn"], "desc": "Лечит отравление."},
-  "moldy_cheese":   {"name": "Заплесневелый сыр",   "kind": "evolution", "desc": "Кое-кто от него в восторге."},
-  "pigeon_costume": {"name": "Костюм голубя",       "kind": "evolution", "desc": "Сидит как влитой. Не спрашивай."}
+ "box": {
+  "name": "Картонная коробка",
+  "kind": "catch",
+  "bonus": 1.0,
+  "desc": "Главный инструмент ловца."
+ },
+ "big_box": {
+  "name": "Большая коробка",
+  "kind": "catch",
+  "bonus": 1.5,
+  "desc": "Из-под холодильника. Вместительная."
+ },
+ "bread_crust": {
+  "name": "Корка хлеба",
+  "kind": "heal",
+  "amount": 20,
+  "desc": "Восстанавливает 20 HP."
+ },
+ "instant_noodles": {
+  "name": "Бич-пакет",
+  "kind": "heal",
+  "amount": 60,
+  "desc": "Восстанавливает 60 HP."
+ },
+ "milk": {
+  "name": "Молоко за вредность",
+  "kind": "cure",
+  "cures": [
+   "psn"
+  ],
+  "desc": "Лечит отравление."
+ },
+ "syringe": {
+  "name": "Шприц",
+  "kind": "evolution",
+  "desc": "Кому-то от этого сильно прибавляется бодрости."
+ },
+ "tin_can": {
+  "name": "Консервная банка",
+  "kind": "evolution",
+  "desc": "Пустая. Но выглядит внушительно."
+ },
+ "maggots": {
+  "name": "Апарыши",
+  "kind": "evolution",
+  "desc": "Лучше не открывать. Кому-то - деликатес."
+ },
+ "bin_lid": {
+  "name": "Крышка бака",
+  "kind": "evolution",
+  "desc": "Годится как щит. И как поднос."
+ },
+ "bait": {
+  "name": "Прикормка",
+  "kind": "evolution",
+  "desc": "Привлекает всех, кого не звали."
+ },
+ "molochko": {
+  "name": "Молочко",
+  "kind": "evolution",
+  "desc": "Только для королевских особ."
+ },
+ "palto": {
+  "name": "Пальто",
+  "kind": "evolution",
+  "desc": "Тёплое. Кто-то уже присмотрел."
+ }
 }

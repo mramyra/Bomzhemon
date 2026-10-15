@@ -1,3 +1,10 @@
 [
-  {"id": "rat_king", "name": "Крысиный король", "inputs": {"rat": 5}, "result": "rat_king"}
+ {
+  "id": "krysiny_korol",
+  "name": "Крысиный король",
+  "inputs": {
+   "krysa": 5
+  },
+  "result": "krysiny_korol"
+ }
 ]

@@ -2,7 +2,7 @@
 import pygame
 
 from game.scenes.base import MessageScene, Scene
-from game.systems import evolution, fusion, moveset
+from game.systems import evolution, fusion, moveset, trade
 from game.ui.sprites import creature_sprite
 from game.ui.widgets import INK, PAPER, SHADE, Menu, font, hp_bar, panel, text, wrap
 
@@ -40,6 +40,8 @@ def move_line(data, mv):
 
 class PartyScene(Scene):
     """Список команды. Z - действия (подробнее / переставить), X - назад."""
+    blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
+
 
     def __init__(self, app):
         super().__init__(app)
@@ -106,6 +108,8 @@ class PartyScene(Scene):
 class CreatureScene(Scene):
     """Подробности существа. <-/-> вкладки, на 1-й вкладке вверх/вниз - другое существо.
     На вкладке приёмов: Z - выбрать приём, Z на другом - поменять местами; нижняя строка - ждущие выучки."""
+    blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
+
 
     def __init__(self, app, idx):
         super().__init__(app)
@@ -226,6 +230,8 @@ class CreatureScene(Scene):
 
 class LearnMoveScene(Scene):
     """Существо хочет выучить приём, но их уже 4: выбираем, какой забыть. X - решить позже."""
+    blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
+
 
     def __init__(self, app, c, move_id, on_done=None):
         super().__init__(app)
@@ -332,19 +338,17 @@ class DexScene(Scene):
             text(surf, "/".join(d.types[t]["name"] for t in sp["types"]), 244, 178, 13)
             for k, ln in enumerate(wrap(sp["desc"], 214, 13)[:4]):
                 text(surf, ln, 244, 200 + k * 16, 13)
-            ev = []
-            for e in sp["evolutions"]:
-                ev.append(f"Lv{e['level']} → {d.species[e['into']]['name']}" if e["method"] == "level" else f"{d.items[e['item']]['name']} → {d.species[e['into']]['name']}")
-            for f in d.fusions:
-                if f["result"] == sid:
-                    ev.append("Крафт: " + ", ".join(f"{d.species[s]['name']} x{n}" for s, n in f["inputs"].items()))
-            for k, ln in enumerate(ev[:2]):
-                text(surf, ln, 244, 270 + k * 16, 12, (90, 60, 40))
+            if sp.get("legendary"):
+                text(surf, "★ Легендарное", 244, 252, 12, (150, 100, 20), True)
+            for k, ln in enumerate(moveset.species_evolution_hints(d, sid)[:3]):
+                text(surf, ln, 244, 268 + k * 14, 12, (90, 60, 40))
         else:
             text(surf, "Не встречен", 300, 150, 16)
 
 
 class CraftScene(Scene):
+    blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
+
     def __init__(self, app):
         super().__init__(app)
         self.refresh()
@@ -379,6 +383,8 @@ class CraftScene(Scene):
 
 
 class BagScene(Scene):
+    blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
+
     def __init__(self, app):
         super().__init__(app)
         self.stage = "items"
@@ -439,3 +445,81 @@ class BagScene(Scene):
         if self.stage == "target":
             panel(surf, (220, 40, 250, 180))
             self.target.draw(surf, 232, 52, row_h=28, size=14)
+
+
+class TradeScene(Scene):
+    """Меняла: отдаёшь существо - получаешь другое, а оно эволюционирует (эволюция по обмену)."""
+    blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
+
+
+    def __init__(self, app):
+        super().__init__(app)
+        self.stage, self.sel, self.opt = "pick", None, None
+        self.refresh()
+
+    def refresh(self):
+        d, st = self.app.data, self.app.state
+        self.rows = trade.tradable(d, st)
+        self.menu = Menu([f"{c.name}  Lv{c.level}" for c, _ in self.rows] or ["(нечего менять)"])
+        self.opts = Menu([""])
+        self.confirm = Menu(["Обменять", "Назад"])
+
+    def handle(self, a):
+        d = self.app.data
+        if self.stage == "pick":
+            r = self.menu.handle(a)
+            if r == "back" or (r == "ok" and not self.rows):
+                self.app.pop()
+            elif r == "ok":
+                self.sel = self.rows[self.menu.i]
+                self.opts = Menu([f"{d.species[rs]['name']} (станет: {d.species[into]['name']})" for rs, into in self.sel[1]])
+                self.stage = "opts"
+        elif self.stage == "opts":
+            r = self.opts.handle(a)
+            if r == "back":
+                self.stage = "pick"
+            elif r == "ok":
+                self.opt, self.confirm.i, self.stage = self.sel[1][self.opts.i], 0, "confirm"
+        else:
+            r = self.confirm.handle(a)
+            if r == "back" or (r == "ok" and self.confirm.i == 1):
+                self.stage = "opts"
+            elif r == "ok":
+                give, (rs, into) = self.sel[0], self.opt
+                old = give.name
+                self.stage = "pick"
+                try:
+                    new = trade.execute(d, self.app.state, give, rs, into)
+                except ValueError:      # пока окно было открыто, состав команды изменился
+                    self.refresh()
+                    self.app.push(MessageScene(self.app, ["Меняла: Что-то поменялось, давай заново."]))
+                    return
+                self.refresh()
+                self.app.push(MessageScene(self.app, [f"Меняла забирает {old} и отдаёт {d.species[rs]['name']}.", f"{d.species[rs]['name']} тут же превращается: {new.name}!"]))
+
+    def draw(self, surf):
+        surf.fill(PAPER)
+        d = self.app.data
+        text(surf, "Меняла", 16, 8, 20, INK, True)
+        text(surf, "Отдай существо - получишь другое. Обмен меняет не только владельца.", 16, 34, 13)
+        if not self.rows:
+            text(surf, "Тебе нечего мне предложить.", 16, 70, 15)
+            wanted = sorted({e["partner"] for sp in d.species.values() for e in sp["evolutions"] if e["method"] == "trade"})
+            for k, ln in enumerate(wrap("Нужны существа: " + ", ".join(d.species[w]["name"] for w in wanted), 440, 13)):
+                text(surf, ln, 16, 96 + k * 16, 13)
+            return
+        self.menu.draw(surf, 16, 62, row_h=24, size=15)
+        if self.stage == "pick":
+            for k, ln in enumerate(wrap("Получишь: " + "; ".join(f"{d.species[rs]['name']} - станет {d.species[into]['name']}" for rs, into in self.rows[self.menu.i][1]), 200, 12)):
+                text(surf, ln, 250, 66 + k * 14, 12)
+        else:
+            panel(surf, (230, 56, 240, 200))
+            if self.stage == "opts":
+                text(surf, f"За {self.sel[0].name} можно получить:", 240, 62, 13)
+                self.opts.draw(surf, 240, 86, row_h=26, size=13)
+            else:
+                rs, into = self.opt
+                text(surf, f"Отдать: {self.sel[0].name}", 240, 66, 14)
+                text(surf, f"Получить: {d.species[rs]['name']}", 240, 88, 14)
+                text(surf, f"(станет: {d.species[into]['name']})", 240, 108, 13)
+                self.confirm.draw(surf, 240, 140, row_h=26, size=15)

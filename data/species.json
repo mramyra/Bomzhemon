@@ -1,19 +1,19 @@
 {
- "rat": {
-  "name": "Крыса",
+ "khomechennok": {
+  "name": "Хомеченнок",
   "types": [
    "rodent"
   ],
   "base": {
-   "hp": 40,
-   "atk": 50,
-   "def": 35,
-   "spa": 25,
-   "spd": 30,
-   "spe": 60
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48
   },
-  "catch_rate": 255,
-  "base_exp": 51,
+  "catch_rate": 235,
+  "base_exp": 55,
   "learnset": [
    [
     1,
@@ -24,15 +24,15 @@
     "squeak"
    ],
    [
-    5,
-    "bite"
+    6,
+    "quick_gnaw"
    ],
    [
-    10,
-    "shawarma"
+    12,
+    "play_dead"
    ],
    [
-    14,
+    20,
     "rat_scuffle"
    ]
   ],
@@ -40,30 +40,34 @@
    {
     "method": "level",
     "level": 16,
-    "into": "rat_boss"
+    "into": "khomyak"
    }
   ],
-  "desc": "Хозяйка свалки. Берёт числом, а не умением."
+  "desc": "Щёки полны, карманы пусты. Классика."
  },
- "rat_boss": {
-  "name": "Крыса-босс",
+ "khomyak": {
+  "name": "Хомяк",
   "types": [
    "rodent"
   ],
   "base": {
-   "hp": 70,
-   "atk": 85,
-   "def": 60,
-   "spa": 40,
-   "spd": 50,
-   "spe": 70
+   "hp": 90,
+   "atk": 58,
+   "def": 90,
+   "spa": 45,
+   "spd": 71,
+   "spe": 32
   },
-  "catch_rate": 90,
-  "base_exp": 140,
+  "catch_rate": 120,
+  "base_exp": 120,
   "learnset": [
    [
     1,
     "gnaw"
+   ],
+   [
+    1,
+    "play_dead"
    ],
    [
     1,
@@ -74,30 +78,1685 @@
     "squeak"
    ],
    [
+    24,
+    "bite"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 33,
+    "into": "khomemertv"
+   }
+  ],
+  "desc": "Запасливый. В холодильнике мира уже ничего не осталось."
+ },
+ "khomemertv": {
+  "name": "Хомемертв",
+  "types": [
+   "ghost",
+   "rodent"
+  ],
+  "base": {
+   "hp": 72,
+   "atk": 48,
+   "def": 64,
+   "spa": 120,
+   "spd": 96,
+   "spe": 80
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
     1,
-    "shawarma"
+    "whisper"
    ],
    [
-    22,
-    "expired"
+    1,
+    "grave_chill"
+   ],
+   [
+    1,
+    "delirium"
+   ],
+   [
+    1,
+    "nap"
+   ],
+   [
+    36,
+    "rat_scuffle"
    ]
   ],
   "evolutions": [],
-  "desc": "Жирная, наглая, при галстуке из проволоки."
+  "desc": "Выглядит неважно. Ведёт себя тоже."
  },
- "rat_king": {
+ "shchenok": {
+  "name": "Щенок",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "bark"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    6,
+    "bite"
+   ],
+   [
+    12,
+    "howl"
+   ],
+   [
+    20,
+    "chase"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 13,
+    "into": "pes"
+   }
+  ],
+  "desc": "Верит в людей. Зря."
+ },
+ "pes": {
+  "name": "Пес",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 77,
+   "atk": 96,
+   "def": 64,
+   "spa": 38,
+   "spd": 51,
+   "spe": 58
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "bark"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    1,
+    "howl"
+   ],
+   [
+    24,
+    "chase"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 36,
+    "into": "volchara"
+   }
+  ],
+  "desc": "Знает, где твоя нычка."
+ },
+ "volchara": {
+  "name": "Волчара",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 64,
+   "atk": 88,
+   "def": 64,
+   "spa": 64,
+   "spd": 64,
+   "spe": 136
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "howl"
+   ],
+   [
+    1,
+    "chase"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    36,
+    "scandal"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Бывший Пёс. Теперь с принципами."
+ },
+ "kotenok": {
+  "name": "Котёнок",
+  "types": [
+   "cat"
+  ],
+  "base": {
+   "hp": 38,
+   "atk": 52,
+   "def": 38,
+   "spa": 38,
+   "spd": 38,
+   "spe": 81
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "scratch"
+   ],
+   [
+    1,
+    "hiss"
+   ],
+   [
+    6,
+    "claws"
+   ],
+   [
+    12,
+    "night_yowl"
+   ],
+   [
+    20,
+    "pounce"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 14,
+    "into": "kot"
+   }
+  ],
+  "desc": "Милый. Пока не подойдёшь."
+ },
+ "kot": {
+  "name": "Кот",
+  "types": [
+   "cat"
+  ],
+  "base": {
+   "hp": 51,
+   "atk": 71,
+   "def": 51,
+   "spa": 51,
+   "spd": 51,
+   "spe": 109
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "claws"
+   ],
+   [
+    1,
+    "hiss"
+   ],
+   [
+    1,
+    "night_yowl"
+   ],
+   [
+    1,
+    "scratch"
+   ],
+   [
+    24,
+    "pounce"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 30,
+    "into": "beshekot"
+   }
+  ],
+  "desc": "Гуляет сам по себе и по твоим вещам."
+ },
+ "beshekot": {
+  "name": "Бешекот",
+  "types": [
+   "cat",
+   "poison"
+  ],
+  "base": {
+   "hp": 80,
+   "atk": 80,
+   "def": 80,
+   "spa": 80,
+   "spd": 80,
+   "spe": 80
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
+    1,
+    "claws"
+   ],
+   [
+    1,
+    "hiss"
+   ],
+   [
+    1,
+    "night_yowl"
+   ],
+   [
+    1,
+    "scratch"
+   ],
+   [
+    36,
+    "drool"
+   ],
+   [
+    44,
+    "pounce"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "С пеной у рта доказывает своё."
+ },
+ "yaitso": {
+  "name": "Яйцо",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 46,
+   "atk": 46,
+   "def": 46,
+   "spa": 46,
+   "spd": 46,
+   "spe": 46
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "peck"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    6,
+    "wing_flap"
+   ],
+   [
+    12,
+    "dive_bomb"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 12,
+    "into": "ptenets"
+   }
+  ],
+  "desc": "Что внутри - загадка. Опять."
+ },
+ "ptenets": {
+  "name": "Птенец",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 64,
+   "atk": 64,
+   "def": 64,
+   "spa": 64,
+   "spd": 64,
+   "spe": 64
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "peck"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    1,
+    "wing_flap"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 26,
+    "into": "golub"
+   },
+   {
+    "method": "trade",
+    "partner": "krysa",
+    "into": "goluvin"
+   }
+  ],
+  "desc": "Клюв раскрыт, совесть закрыта."
+ },
+ "golub": {
+  "name": "Голубь",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 96,
+   "atk": 120,
+   "def": 80,
+   "spa": 48,
+   "spd": 64,
+   "spe": 72
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    1,
+    "squawk"
+   ],
+   [
+    1,
+    "wing_flap"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Знает, где у вас бутерброд."
+ },
+ "goluvin": {
+  "name": "Голувин",
+  "types": [
+   "bird",
+   "rodent"
+  ],
+  "base": {
+   "hp": 68,
+   "atk": 68,
+   "def": 68,
+   "spa": 68,
+   "spd": 68,
+   "spe": 68
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "wing_flap"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Плод обмена и взаимного непонимания."
+ },
+ "strannoe_yaitso": {
+  "name": "Странное яйцо",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 46,
+   "atk": 46,
+   "def": 46,
+   "spa": 46,
+   "spd": 46,
+   "spe": 46
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "peck"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    6,
+    "wing_flap"
+   ],
+   [
+    12,
+    "dive_bomb"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 13,
+    "into": "pleshinets"
+   }
+  ],
+  "desc": "Тикает. Нет, показалось."
+ },
+ "pleshinets": {
+  "name": "Плешинец",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 45,
+   "atk": 90,
+   "def": 38,
+   "spa": 71,
+   "spd": 45,
+   "spe": 96
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "peck"
+   ],
+   [
+    1,
+    "wing_flap"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    1,
+    "dive_bomb"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 30,
+    "into": "popugaeshche"
+   }
+  ],
+  "desc": "Перьев мало, амбиций много."
+ },
+ "popugaeshche": {
+  "name": "Попугаеще",
+  "types": [
+   "bird"
+  ],
+  "base": {
+   "hp": 72,
+   "atk": 48,
+   "def": 64,
+   "spa": 120,
+   "spd": 96,
+   "spe": 80
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
+    1,
+    "squawk"
+   ],
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    1,
+    "wing_flap"
+   ],
+   [
+    1,
+    "droppings"
+   ],
+   [
+    36,
+    "delirium"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Повторяет всё, что слышал в подворотне. Прям всё."
+ },
+ "lisenok": {
+  "name": "Лисенок",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 38,
+   "atk": 52,
+   "def": 38,
+   "spa": 38,
+   "spd": 38,
+   "spe": 81
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "bark"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    6,
+    "bite"
+   ],
+   [
+    12,
+    "howl"
+   ],
+   [
+    20,
+    "chase"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 22,
+    "into": "lisitsa"
+   }
+  ],
+  "desc": "Рыжий воришка с большими глазами."
+ },
+ "lisitsa": {
+  "name": "Лисица",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 55,
+   "atk": 75,
+   "def": 55,
+   "spa": 55,
+   "spd": 55,
+   "spe": 116
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "howl"
+   ],
+   [
+    1,
+    "chase"
+   ],
+   [
+    1,
+    "snarl"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Знает, где курятник. И где участковый."
+ },
+ "enot": {
+  "name": "Енот",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "bark"
+   ],
+   [
+    6,
+    "scratch"
+   ],
+   [
+    12,
+    "snarl"
+   ],
+   [
+    20,
+    "howl"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "item",
+    "item": "bin_lid",
+    "into": "rytsenot"
+   }
+  ],
+  "desc": "Полоскает всё подряд. Включая твоё белое."
+ },
+ "rytsenot": {
+  "name": "Рыценот",
+  "types": [
+   "dog",
+   "human"
+  ],
+  "base": {
+   "hp": 96,
+   "atk": 62,
+   "def": 96,
+   "spa": 48,
+   "spd": 75,
+   "spe": 34
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "knight_charge"
+   ],
+   [
+    1,
+    "howl"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    24,
+    "shield_wall"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Крышка бака - щит. Остальное - дело чести."
+ },
+ "tarakan": {
+  "name": "Таракан",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 66,
+   "atk": 43,
+   "def": 66,
+   "spa": 33,
+   "spd": 52,
+   "spe": 24
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    6,
+    "gnaw"
+   ],
+   [
+    12,
+    "buzz"
+   ],
+   [
+    20,
+    "swarm"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "item",
+    "item": "bait",
+    "into": "tararoy"
+   }
+  ],
+  "desc": "Переживёт всё. Кроме тапка."
+ },
+ "tararoy": {
+  "name": "Тарарой",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 62,
+   "atk": 41,
+   "def": 55,
+   "spa": 102,
+   "spd": 82,
+   "spe": 68
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "swarm"
+   ],
+   [
+    1,
+    "buzz"
+   ],
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Не один. Совсем не один."
+ },
+ "gusenitsa": {
+  "name": "Гусеница",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 66,
+   "atk": 43,
+   "def": 66,
+   "spa": 33,
+   "spd": 52,
+   "spe": 24
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    6,
+    "cocoon"
+   ],
+   [
+    12,
+    "scale_dust"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 9,
+    "into": "kokonishche"
+   }
+  ],
+  "desc": "Жуёт. Растёт. Мечтает."
+ },
+ "kokonishche": {
+  "name": "Коконище",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 90,
+   "atk": 58,
+   "def": 90,
+   "spa": 45,
+   "spd": 71,
+   "spe": 32
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "cocoon"
+   ],
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "scale_dust"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    24,
+    "buzz"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 16,
+    "into": "babakach"
+   },
+   {
+    "method": "item",
+    "item": "palto",
+    "into": "mol"
+   }
+  ],
+  "desc": "Висит в углу и копит силы. Как и все мы."
+ },
+ "babakach": {
+  "name": "Бабакач",
+  "types": [
+   "bug",
+   "human"
+  ],
+  "base": {
+   "hp": 96,
+   "atk": 120,
+   "def": 80,
+   "spa": 48,
+   "spd": 64,
+   "spe": 72
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
+    1,
+    "stinger"
+   ],
+   [
+    1,
+    "scandal"
+   ],
+   [
+    1,
+    "buzz"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    36,
+    "shield_wall"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Когда-то была бабочкой. Теперь качалка."
+ },
+ "mol": {
+  "name": "Моль",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 62,
+   "atk": 41,
+   "def": 55,
+   "spa": 102,
+   "spd": 82,
+   "spe": 68
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "scale_dust"
+   ],
+   [
+    1,
+    "buzz"
+   ],
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Ест пальто. Любит пальто. Живёт в пальто."
+ },
+ "nedopchel": {
+  "name": "Недопчел",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 43,
+   "atk": 28,
+   "def": 38,
+   "spa": 71,
+   "spd": 57,
+   "spe": 48
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    6,
+    "buzz"
+   ],
+   [
+    12,
+    "scale_dust"
+   ],
+   [
+    20,
+    "swarm"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 16,
+    "into": "pchel"
+   },
+   {
+    "method": "item",
+    "item": "molochko",
+    "into": "korolevchel"
+   }
+  ],
+  "desc": "Пчела, но без уверенности."
+ },
+ "pchel": {
+  "name": "Пчел",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 51,
+   "atk": 71,
+   "def": 51,
+   "spa": 51,
+   "spd": 51,
+   "spe": 109
+  },
+  "catch_rate": 120,
+  "base_exp": 120,
+  "learnset": [
+   [
+    1,
+    "sting"
+   ],
+   [
+    1,
+    "buzz"
+   ],
+   [
+    1,
+    "swarm"
+   ],
+   [
+    1,
+    "crawl"
+   ],
+   [
+    24,
+    "stinger"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "level",
+    "level": 30,
+    "into": "boevoypchel"
+   }
+  ],
+  "desc": "Работает за двоих. Платят за одного."
+ },
+ "boevoypchel": {
+  "name": "Боевойпчел",
+  "types": [
+   "bug",
+   "poison"
+  ],
+  "base": {
+   "hp": 96,
+   "atk": 120,
+   "def": 80,
+   "spa": 48,
+   "spd": 64,
+   "spe": 72
+  },
+  "catch_rate": 45,
+  "base_exp": 190,
+  "learnset": [
+   [
+    1,
+    "stinger"
+   ],
+   [
+    1,
+    "swarm"
+   ],
+   [
+    1,
+    "buzz"
+   ],
+   [
+    1,
+    "cologne"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Жало с допуском. Допуск не выдан."
+ },
+ "korolevchel": {
+  "name": "Королевчел",
+  "types": [
+   "bug"
+  ],
+  "base": {
+   "hp": 62,
+   "atk": 41,
+   "def": 55,
+   "spa": 102,
+   "spd": 82,
+   "spe": 68
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "swarm"
+   ],
+   [
+    1,
+    "buzz"
+   ],
+   [
+    1,
+    "scale_dust"
+   ],
+   [
+    1,
+    "crawl"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Весь улей на её молочке. Буквально."
+ },
+ "pleshipes": {
+  "name": "Плешипес",
+  "types": [
+   "dog"
+  ],
+  "base": {
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "bark"
+   ],
+   [
+    1,
+    "snarl"
+   ],
+   [
+    6,
+    "bite"
+   ],
+   [
+    12,
+    "howl"
+   ],
+   [
+    20,
+    "chase"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "trade",
+    "partner": "pleshipes",
+    "into": "siamsobek"
+   },
+   {
+    "method": "trade",
+    "partner": "cheremshkot",
+    "into": "kotopes"
+   }
+  ],
+  "desc": "Лысый, но не комплексует. Мёрзнет - да."
+ },
+ "siamsobek": {
+  "name": "Сиамсобек",
+  "types": [
+   "dog",
+   "cat"
+  ],
+  "base": {
+   "hp": 55,
+   "atk": 75,
+   "def": 55,
+   "spa": 55,
+   "spd": 55,
+   "spe": 116
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "claws"
+   ],
+   [
+    1,
+    "howl"
+   ],
+   [
+    1,
+    "night_yowl"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Сиамская собака. Не спрашивай, как."
+ },
+ "cheremshkot": {
+  "name": "Черемшкот",
+  "types": [
+   "cat"
+  ],
+  "base": {
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "scratch"
+   ],
+   [
+    1,
+    "hiss"
+   ],
+   [
+    6,
+    "claws"
+   ],
+   [
+    12,
+    "snarl"
+   ],
+   [
+    20,
+    "night_yowl"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "trade",
+    "partner": "pleshipes",
+    "into": "kotopes"
+   }
+  ],
+  "desc": "Пахнет черемшой. Подозрительно сильно."
+ },
+ "kotopes": {
+  "name": "Котопес",
+  "types": [
+   "cat",
+   "dog"
+  ],
+  "base": {
+   "hp": 82,
+   "atk": 102,
+   "def": 68,
+   "spa": 41,
+   "spd": 55,
+   "spe": 62
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "claws"
+   ],
+   [
+    1,
+    "bite"
+   ],
+   [
+    1,
+    "pounce"
+   ],
+   [
+    1,
+    "howl"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Не определился. Громко."
+ },
+ "golubiny_korol": {
+  "name": "Голубиный король",
+  "types": [
+   "bird",
+   "human"
+  ],
+  "base": {
+   "hp": 118,
+   "atk": 148,
+   "def": 98,
+   "spa": 59,
+   "spd": 79,
+   "spe": 88
+  },
+  "catch_rate": 3,
+  "base_exp": 300,
+  "learnset": [
+   [
+    1,
+    "dive_bomb"
+   ],
+   [
+    1,
+    "squawk"
+   ],
+   [
+    1,
+    "scandal"
+   ],
+   [
+    1,
+    "balcony"
+   ],
+   [
+    40,
+    "shield_wall"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Бомж в костюме голубя. Или голубь в костюме бомжа. Он сам уже не помнит.",
+  "legendary": true
+ },
+ "bingus": {
+  "name": "Бингус",
+  "types": [
+   "cat"
+  ],
+  "base": {
+   "hp": 79,
+   "atk": 108,
+   "def": 79,
+   "spa": 79,
+   "spd": 79,
+   "spe": 167
+  },
+  "catch_rate": 3,
+  "base_exp": 300,
+  "learnset": [
+   [
+    1,
+    "pounce"
+   ],
+   [
+    1,
+    "night_yowl"
+   ],
+   [
+    1,
+    "claws"
+   ],
+   [
+    1,
+    "hiss"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Лысый. Легендарный. Бингус.",
+  "legendary": true
+ },
+ "belochka": {
+  "name": "Белочка",
+  "types": [
+   "rodent",
+   "ghost"
+  ],
+  "base": {
+   "hp": 88,
+   "atk": 59,
+   "def": 79,
+   "spa": 148,
+   "spd": 118,
+   "spe": 98
+  },
+  "catch_rate": 3,
+  "base_exp": 300,
+  "learnset": [
+   [
+    1,
+    "hallucination"
+   ],
+   [
+    1,
+    "delirium"
+   ],
+   [
+    1,
+    "quick_gnaw"
+   ],
+   [
+    1,
+    "whisper"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Массовая галлюцинация. Видят все, кому нужно и не нужно.",
+  "legendary": true
+ },
+ "dikiy": {
+  "name": "Дикий",
+  "types": [
+   "human"
+  ],
+  "base": {
+   "hp": 60,
+   "atk": 60,
+   "def": 60,
+   "spa": 60,
+   "spd": 60,
+   "spe": 60
+  },
+  "catch_rate": 45,
+  "base_exp": 110,
+  "learnset": [
+   [
+    1,
+    "cuff"
+   ],
+   [
+    1,
+    "balcony"
+   ],
+   [
+    1,
+    "slipper"
+   ],
+   [
+    10,
+    "scandal"
+   ],
+   [
+    20,
+    "whisper"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Одичавший бомж. Ветки развития пока не придуманы."
+ },
+ "krysa": {
+  "name": "Крыса",
+  "types": [
+   "rodent"
+  ],
+  "base": {
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48
+  },
+  "catch_rate": 235,
+  "base_exp": 55,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    6,
+    "quick_gnaw"
+   ],
+   [
+    12,
+    "play_dead"
+   ],
+   [
+    20,
+    "rat_scuffle"
+   ]
+  ],
+  "evolutions": [
+   {
+    "method": "item",
+    "item": "syringe",
+    "into": "spidkrys"
+   },
+   {
+    "method": "item",
+    "item": "tin_can",
+    "into": "rytsekrys"
+   },
+   {
+    "method": "trade",
+    "partner": "ptenets",
+    "into": "krysolet"
+   },
+   {
+    "method": "item",
+    "item": "maggots",
+    "into": "gniekrys"
+   }
+  ],
+  "desc": "Хозяйка свалки. Берёт числом, а не умением."
+ },
+ "spidkrys": {
+  "name": "Спидкрыс",
+  "types": [
+   "rodent"
+  ],
+  "base": {
+   "hp": 55,
+   "atk": 75,
+   "def": 55,
+   "spa": 55,
+   "spd": 55,
+   "spe": 116
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "quick_gnaw"
+   ],
+   [
+    1,
+    "adrenaline"
+   ],
+   [
+    1,
+    "rat_scuffle"
+   ],
+   [
+    1,
+    "bite"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Всегда куда-то опаздывает. Всегда успевает."
+ },
+ "rytsekrys": {
+  "name": "Рыцекрыс",
+  "types": [
+   "rodent",
+   "human"
+  ],
+  "base": {
+   "hp": 96,
+   "atk": 62,
+   "def": 96,
+   "spa": 48,
+   "spd": 75,
+   "spe": 34
+  },
+  "catch_rate": 70,
+  "base_exp": 150,
+  "learnset": [
+   [
+    1,
+    "gnaw"
+   ],
+   [
+    1,
+    "knight_charge"
+   ],
+   [
+    1,
+    "rat_scuffle"
+   ],
+   [
+    1,
+    "squeak"
+   ],
+   [
+    24,
+    "shield_wall"
+   ]
+  ],
+  "evolutions": [],
+  "desc": "Консервная банка - латы. Свалка - королевство."
+ },
+ "krysiny_korol": {
   "name": "Крысиный король",
   "types": [
    "rodent",
    "poison"
   ],
   "base": {
-   "hp": 100,
-   "atk": 95,
-   "def": 80,
-   "spa": 70,
-   "spd": 80,
-   "spe": 65
+   "hp": 94,
+   "atk": 118,
+   "def": 78,
+   "spa": 47,
+   "spd": 63,
+   "spe": 70
   },
   "catch_rate": 20,
   "base_exp": 220,
@@ -126,499 +1785,63 @@
   "evolutions": [],
   "desc": "Пять крыс, одна судьба. Получается только крафтом."
  },
- "mouse": {
-  "name": "Мышь",
-  "types": [
-   "rodent"
-  ],
-  "base": {
-   "hp": 38,
-   "atk": 48,
-   "def": 32,
-   "spa": 35,
-   "spd": 34,
-   "spe": 72
-  },
-  "catch_rate": 255,
-  "base_exp": 40,
-  "learnset": [
-   [
-    1,
-    "gnaw"
-   ],
-   [
-    1,
-    "squeak"
-   ],
-   [
-    5,
-    "scratch"
-   ],
-   [
-    9,
-    "bite"
-   ],
-   [
-    13,
-    "rat_scuffle"
-   ]
-  ],
-  "evolutions": [
-   {
-    "method": "item",
-    "item": "moldy_cheese",
-    "into": "mouse_mutant"
-   }
-  ],
-  "desc": "Мелкая, шустрая и всегда при крошках."
- },
- "mouse_mutant": {
-  "name": "Мышь-мутант",
+ "krysolet": {
+  "name": "Крысолет",
   "types": [
    "rodent",
-   "poison"
-  ],
-  "base": {
-   "hp": 60,
-   "atk": 70,
-   "def": 45,
-   "spa": 65,
-   "spd": 45,
-   "spe": 85
-  },
-  "catch_rate": 90,
-  "base_exp": 130,
-  "learnset": [
-   [
-    1,
-    "gnaw"
-   ],
-   [
-    1,
-    "cologne"
-   ],
-   [
-    1,
-    "rat_scuffle"
-   ],
-   [
-    1,
-    "squeak"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Сыр был с историей. Мышь теперь тоже."
- },
- "hedgehog": {
-  "name": "Ёж",
-  "types": [
-   "rodent"
-  ],
-  "base": {
-   "hp": 50,
-   "atk": 50,
-   "def": 75,
-   "spa": 35,
-   "spd": 50,
-   "spe": 30
-  },
-  "catch_rate": 120,
-  "base_exp": 65,
-  "learnset": [
-   [
-    1,
-    "gnaw"
-   ],
-   [
-    1,
-    "play_dead"
-   ],
-   [
-    8,
-    "bite"
-   ],
-   [
-    15,
-    "rat_scuffle"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "По версии разработчиков - грызун. Спорить бесполезно."
- },
- "pigeon": {
-  "name": "Голубь",
-  "types": [
    "bird"
   ],
   "base": {
-   "hp": 40,
-   "atk": 45,
-   "def": 40,
-   "spa": 35,
-   "spd": 35,
-   "spe": 56
-  },
-  "catch_rate": 255,
-  "base_exp": 50,
-  "learnset": [
-   [
-    1,
-    "peck"
-   ],
-   [
-    1,
-    "droppings"
-   ],
-   [
-    8,
-    "dive_bomb"
-   ]
-  ],
-  "evolutions": [
-   {
-    "method": "level",
-    "level": 15,
-    "into": "fat_pigeon"
-   }
-  ],
-  "desc": "Знает, где у вас бутерброд."
- },
- "fat_pigeon": {
-  "name": "Жирный голубь",
-  "types": [
-   "bird"
-  ],
-  "base": {
-   "hp": 70,
+   "hp": 55,
    "atk": 75,
-   "def": 65,
+   "def": 55,
    "spa": 55,
    "spd": 55,
-   "spe": 45
+   "spe": 116
   },
-  "catch_rate": 120,
-  "base_exp": 120,
-  "learnset": [
-   [
-    1,
-    "peck"
-   ],
-   [
-    1,
-    "droppings"
-   ],
-   [
-    1,
-    "dive_bomb"
-   ],
-   [
-    20,
-    "shawarma"
-   ]
-  ],
-  "evolutions": [
-   {
-    "method": "item",
-    "item": "pigeon_costume",
-    "into": "pigeon_king"
-   }
-  ],
-  "desc": "Давно не летает. Не хочет, говорит."
- },
- "pigeon_king": {
-  "name": "Голубиный король",
-  "types": [
-   "bird",
-   "human"
-  ],
-  "base": {
-   "hp": 85,
-   "atk": 78,
-   "def": 76,
-   "spa": 66,
-   "spd": 78,
-   "spe": 64
-  },
-  "catch_rate": 30,
-  "base_exp": 200,
-  "learnset": [
-   [
-    1,
-    "dive_bomb"
-   ],
-   [
-    1,
-    "droppings"
-   ],
-   [
-    1,
-    "balcony"
-   ],
-   [
-    1,
-    "scandal"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Бомж в костюме голубя. Или голубь в костюме бомжа. Он сам уже не помнит."
- },
- "cockroach": {
-  "name": "Таракан",
-  "types": [
-   "bug"
-  ],
-  "base": {
-   "hp": 40,
-   "atk": 50,
-   "def": 60,
-   "spa": 45,
-   "spd": 40,
-   "spe": 55
-  },
-  "catch_rate": 255,
-  "base_exp": 45,
-  "learnset": [
-   [
-    1,
-    "sting"
-   ],
-   [
-    1,
-    "crawl"
-   ],
-   [
-    7,
-    "gnaw"
-   ],
-   [
-    11,
-    "swarm"
-   ]
-  ],
-  "evolutions": [
-   {
-    "method": "level",
-    "level": 16,
-    "into": "cockroach_vet"
-   }
-  ],
-  "desc": "Переживёт всех. Включая автора."
- },
- "cockroach_vet": {
-  "name": "Таракан-ветеран",
-  "types": [
-   "bug"
-  ],
-  "base": {
-   "hp": 70,
-   "atk": 70,
-   "def": 90,
-   "spa": 70,
-   "spd": 60,
-   "spe": 60
-  },
-  "catch_rate": 90,
-  "base_exp": 125,
-  "learnset": [
-   [
-    1,
-    "sting"
-   ],
-   [
-    1,
-    "crawl"
-   ],
-   [
-    1,
-    "swarm"
-   ],
-   [
-    1,
-    "cologne"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Усы - как у дембеля."
- },
- "flea": {
-  "name": "Блоха",
-  "types": [
-   "bug"
-  ],
-  "base": {
-   "hp": 35,
-   "atk": 60,
-   "def": 38,
-   "spa": 40,
-   "spd": 35,
-   "spe": 95
-  },
-  "catch_rate": 255,
-  "base_exp": 45,
-  "learnset": [
-   [
-    1,
-    "sting"
-   ],
-   [
-    1,
-    "crawl"
-   ],
-   [
-    10,
-    "bite"
-   ],
-   [
-    16,
-    "swarm"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Не поймать, пока не уснёт. Ты тоже ей не нравишься."
- },
- "stray_dog": {
-  "name": "Дворняга",
-  "types": [
-   "dog"
-  ],
-  "base": {
-   "hp": 50,
-   "atk": 55,
-   "def": 42,
-   "spa": 35,
-   "spd": 40,
-   "spe": 58
-  },
-  "catch_rate": 190,
-  "base_exp": 60,
-  "learnset": [
-   [
-    1,
-    "bite"
-   ],
-   [
-    1,
-    "bark"
-   ],
-   [
-    6,
-    "snarl"
-   ],
-   [
-    20,
-    "chase"
-   ]
-  ],
-  "evolutions": [
-   {
-    "method": "level",
-    "level": 16,
-    "into": "shepherd"
-   }
-  ],
-  "desc": "Верный друг. Если покормить."
- },
- "shepherd": {
-  "name": "Овчарка-бродяга",
-  "types": [
-   "dog"
-  ],
-  "base": {
-   "hp": 80,
-   "atk": 90,
-   "def": 70,
-   "spa": 45,
-   "spd": 60,
-   "spe": 70
-  },
-  "catch_rate": 90,
+  "catch_rate": 70,
   "base_exp": 150,
   "learnset": [
    [
     1,
-    "bite"
+    "gnaw"
    ],
    [
     1,
-    "bark"
+    "wing_flap"
    ],
    [
     1,
-    "snarl"
+    "dive_bomb"
    ],
    [
     1,
-    "chase"
+    "quick_gnaw"
    ]
   ],
   "evolutions": [],
-  "desc": "Бывшая служебная. Теперь вольный художник."
+  "desc": "Крыса, которая посмотрела на голубей и решила: могу."
  },
- "street_cat": {
-  "name": "Дворовый кот",
+ "gniekrys": {
+  "name": "Гниекрыс",
   "types": [
-   "cat"
+   "poison",
+   "rodent"
   ],
   "base": {
-   "hp": 48,
-   "atk": 55,
-   "def": 40,
-   "spa": 35,
-   "spd": 45,
-   "spe": 70
-  },
-  "catch_rate": 190,
-  "base_exp": 60,
-  "learnset": [
-   [
-    1,
-    "scratch"
-   ],
-   [
-    1,
-    "hiss"
-   ],
-   [
-    7,
-    "claws"
-   ],
-   [
-    20,
-    "pounce"
-   ]
-  ],
-  "evolutions": [
-   {
-    "method": "level",
-    "level": 16,
-    "into": "bandit_cat"
-   }
-  ],
-  "desc": "Территорию не делит. Территория - его."
- },
- "bandit_cat": {
-  "name": "Кот-бандит",
-  "types": [
-   "cat"
-  ],
-  "base": {
-   "hp": 68,
-   "atk": 76,
+   "hp": 62,
+   "atk": 41,
    "def": 55,
-   "spa": 45,
-   "spd": 55,
-   "spe": 78
+   "spa": 102,
+   "spd": 82,
+   "spe": 68
   },
-  "catch_rate": 90,
-  "base_exp": 140,
+  "catch_rate": 70,
+  "base_exp": 150,
   "learnset": [
    [
     1,
-    "claws"
-   ],
-   [
-    1,
-    "hiss"
+    "rot_bite"
    ],
    [
     1,
@@ -626,171 +1849,14 @@
    ],
    [
     1,
-    "scratch"
-   ],
-   [
-    34,
-    "pounce"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Шрам на ухе, косой взгляд, ни одной прописки."
- },
- "black_cat": {
-  "name": "Чёрный кот",
-  "types": [
-   "cat",
-   "ghost"
-  ],
-  "base": {
-   "hp": 50,
-   "atk": 65,
-   "def": 45,
-   "spa": 60,
-   "spd": 50,
-   "spe": 75
-  },
-  "catch_rate": 90,
-  "base_exp": 100,
-  "learnset": [
-   [
-    1,
-    "scratch"
-   ],
-   [
-    1,
-    "whisper"
-   ],
-   [
-    7,
-    "hiss"
-   ],
-   [
-    11,
-    "delirium"
-   ],
-   [
-    15,
-    "nap"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Перешёл дорогу. Тебе. Специально."
- },
- "toad": {
-  "name": "Жаба помойная",
-  "types": [
-   "poison"
-  ],
-  "base": {
-   "hp": 60,
-   "atk": 50,
-   "def": 55,
-   "spa": 65,
-   "spd": 55,
-   "spe": 35
-  },
-  "catch_rate": 120,
-  "base_exp": 70,
-  "learnset": [
-   [
-    1,
-    "cologne"
-   ],
-   [
-    1,
-    "squeak"
-   ],
-   [
-    8,
-    "shawarma"
-   ],
-   [
-    16,
-    "expired"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Сидит в луже и смотрит. Лучше не целовать."
- },
- "granny": {
-  "name": "Бабка с авоськой",
-  "types": [
-   "human"
-  ],
-  "base": {
-   "hp": 70,
-   "atk": 65,
-   "def": 55,
-   "spa": 60,
-   "spd": 70,
-   "spe": 60
-  },
-  "catch_rate": 75,
-  "base_exp": 80,
-  "learnset": [
-   [
-    1,
-    "cuff"
-   ],
-   [
-    1,
-    "balcony"
-   ],
-   [
-    8,
-    "slipper"
-   ],
-   [
-    13,
-    "scandal"
-   ]
-  ],
-  "evolutions": [],
-  "desc": "Знает всё про всех. И про тебя тоже."
- },
- "tramp": {
-  "name": "Одетый бомж",
-  "types": [
-   "human"
-  ],
-  "base": {
-   "hp": 70,
-   "atk": 70,
-   "def": 60,
-   "spa": 45,
-   "spd": 60,
-   "spe": 50
-  },
-  "catch_rate": 60,
-  "base_exp": 95,
-  "learnset": [
-   [
-    1,
-    "cuff"
+    "gnaw"
    ],
    [
     1,
     "cologne"
-   ],
-   [
-    6,
-    "balcony"
-   ],
-   [
-    12,
-    "slipper"
-   ],
-   [
-    18,
-    "delirium"
-   ],
-   [
-    24,
-    "scandal"
    ]
   ],
   "evolutions": [],
-  "desc": "Три тулупа сверху - значит, всё серьёзно."
+  "desc": "Пахнет так, что враг сдаётся первым."
  }
 }

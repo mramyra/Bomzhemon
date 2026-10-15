@@ -328,5 +328,204 @@
   "pp": 10,
   "priority": 0,
   "effect": {}
+ },
+ "howl": {
+  "name": "Вой на луну",
+  "type": "dog",
+  "category": "special",
+  "power": 65,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "night_yowl": {
+  "name": "Ночной ор",
+  "type": "cat",
+  "category": "special",
+  "power": 65,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "drool": {
+  "name": "Пена у рта",
+  "type": "poison",
+  "category": "physical",
+  "power": 50,
+  "accuracy": 100,
+  "pp": 25,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "psn",
+    "chance": 30
+   }
+  }
+ },
+ "rot_bite": {
+  "name": "Гнилой укус",
+  "type": "poison",
+  "category": "physical",
+  "power": 65,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "psn",
+    "chance": 30
+   }
+  }
+ },
+ "squawk": {
+  "name": "Ор",
+  "type": "bird",
+  "category": "special",
+  "power": 70,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "confuse": 20
+  }
+ },
+ "wing_flap": {
+  "name": "Хлопанье крыльями",
+  "type": "bird",
+  "category": "physical",
+  "power": 50,
+  "accuracy": 100,
+  "pp": 30,
+  "priority": 0,
+  "effect": {}
+ },
+ "cocoon": {
+  "name": "Окуклиться",
+  "type": "bug",
+  "category": "status",
+  "power": 0,
+  "accuracy": null,
+  "pp": 20,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "self",
+    "stat": "def",
+    "stages": 2
+   }
+  }
+ },
+ "scale_dust": {
+  "name": "Пыльца с пальто",
+  "type": "bug",
+  "category": "special",
+  "power": 50,
+  "accuracy": 100,
+  "pp": 25,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "par",
+    "chance": 30
+   }
+  }
+ },
+ "buzz": {
+  "name": "Жужжание",
+  "type": "bug",
+  "category": "special",
+  "power": 60,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {
+   "flinch": 20
+  }
+ },
+ "stinger": {
+  "name": "Жало-убийца",
+  "type": "bug",
+  "category": "physical",
+  "power": 85,
+  "accuracy": 90,
+  "pp": 10,
+  "priority": 0,
+  "effect": {}
+ },
+ "hallucination": {
+  "name": "Массовая галлюцинация",
+  "type": "ghost",
+  "category": "special",
+  "power": 80,
+  "accuracy": 90,
+  "pp": 10,
+  "priority": 0,
+  "effect": {
+   "confuse": 30
+  }
+ },
+ "shield_wall": {
+  "name": "Щит из крышки",
+  "type": "human",
+  "category": "status",
+  "power": 0,
+  "accuracy": null,
+  "pp": 20,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "self",
+    "stat": "def",
+    "stages": 2
+   }
+  }
+ },
+ "knight_charge": {
+  "name": "Рыцарский заход",
+  "type": "human",
+  "category": "physical",
+  "power": 75,
+  "accuracy": 95,
+  "pp": 15,
+  "priority": 0,
+  "effect": {}
+ },
+ "quick_gnaw": {
+  "name": "Быстрая грызня",
+  "type": "rodent",
+  "category": "physical",
+  "power": 40,
+  "accuracy": 100,
+  "pp": 30,
+  "priority": 1,
+  "effect": {}
+ },
+ "adrenaline": {
+  "name": "Прилив бодрости",
+  "type": "rodent",
+  "category": "status",
+  "power": 0,
+  "accuracy": null,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "self",
+    "stat": "spe",
+    "stages": 2
+   }
+  }
+ },
+ "grave_chill": {
+  "name": "Могильный холодок",
+  "type": "ghost",
+  "category": "special",
+  "power": 70,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {}
  }
 }

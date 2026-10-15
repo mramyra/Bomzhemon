@@ -1,23 +1,131 @@
 {
-  "dump": {
-    "name": "Свалка",
-    "encounters": [
-      {"species": "rat",       "min": 2, "max": 6, "weight": 30},
-      {"species": "mouse",     "min": 2, "max": 6, "weight": 25},
-      {"species": "pigeon",    "min": 2, "max": 6, "weight": 20},
-      {"species": "cockroach", "min": 3, "max": 7, "weight": 15},
-      {"species": "flea",      "min": 3, "max": 6, "weight": 10},
-      {"species": "stray_dog", "min": 4, "max": 7, "weight": 8},
-      {"species": "street_cat","min": 4, "max": 7, "weight": 8},
-      {"species": "hedgehog",  "min": 4, "max": 7, "weight": 6},
-      {"species": "toad",      "min": 5, "max": 8, "weight": 5},
-      {"species": "black_cat", "min": 6, "max": 8, "weight": 2},
-      {"species": "granny",    "min": 6, "max": 8, "weight": 2}
-    ],
-    "item_spawns": [
-      {"item": "box", "weight": 50}, {"item": "bread_crust", "weight": 25},
-      {"item": "milk", "weight": 10}, {"item": "instant_noodles", "weight": 8},
-      {"item": "moldy_cheese", "weight": 4}, {"item": "pigeon_costume", "weight": 3}
-    ]
-  }
+ "dump": {
+  "name": "Свалка",
+  "encounters": [
+   {
+    "species": "krysa",
+    "min": 2,
+    "max": 6,
+    "weight": 30
+   },
+   {
+    "species": "khomechennok",
+    "min": 2,
+    "max": 6,
+    "weight": 20
+   },
+   {
+    "species": "shchenok",
+    "min": 3,
+    "max": 7,
+    "weight": 15
+   },
+   {
+    "species": "kotenok",
+    "min": 3,
+    "max": 7,
+    "weight": 15
+   },
+   {
+    "species": "yaitso",
+    "min": 2,
+    "max": 5,
+    "weight": 12
+   },
+   {
+    "species": "gusenitsa",
+    "min": 2,
+    "max": 6,
+    "weight": 12
+   },
+   {
+    "species": "tarakan",
+    "min": 3,
+    "max": 7,
+    "weight": 12
+   },
+   {
+    "species": "lisenok",
+    "min": 4,
+    "max": 7,
+    "weight": 8
+   },
+   {
+    "species": "enot",
+    "min": 4,
+    "max": 7,
+    "weight": 8
+   },
+   {
+    "species": "nedopchel",
+    "min": 3,
+    "max": 7,
+    "weight": 8
+   },
+   {
+    "species": "strannoe_yaitso",
+    "min": 3,
+    "max": 6,
+    "weight": 4
+   },
+   {
+    "species": "pleshipes",
+    "min": 4,
+    "max": 7,
+    "weight": 5
+   },
+   {
+    "species": "cheremshkot",
+    "min": 4,
+    "max": 7,
+    "weight": 5
+   }
+  ],
+  "item_spawns": [
+   {
+    "item": "box",
+    "weight": 50
+   },
+   {
+    "item": "bread_crust",
+    "weight": 25
+   },
+   {
+    "item": "milk",
+    "weight": 10
+   },
+   {
+    "item": "instant_noodles",
+    "weight": 8
+   },
+   {
+    "item": "tin_can",
+    "weight": 6
+   },
+   {
+    "item": "maggots",
+    "weight": 6
+   },
+   {
+    "item": "bin_lid",
+    "weight": 5
+   },
+   {
+    "item": "bait",
+    "weight": 5
+   },
+   {
+    "item": "molochko",
+    "weight": 4
+   },
+   {
+    "item": "palto",
+    "weight": 4
+   },
+   {
+    "item": "syringe",
+    "weight": 3
+   }
+  ]
+ }
 }

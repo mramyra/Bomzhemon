@@ -65,13 +65,22 @@ def describe_move(data, move_id):
     return "; ".join(parts) + "."
 
 
-def evolution_hints(data, c):
-    """Подсказки, как это существо развивается."""
+def species_evolution_hints(data, species_id):
+    """Подсказки, как вид развивается: уровень / предмет / обмен / крафт."""
     out = []
-    for e in c.species["evolutions"]:
+    for e in data.species[species_id]["evolutions"]:
         into = data.species[e["into"]]["name"]
-        out.append(f"Эволюция: Lv{e['level']} - {into}" if e["method"] == "level" else f"Эволюция: {data.items[e['item']]['name']} - {into}")
+        if e["method"] == "level":
+            out.append(f"Lv{e['level']} - {into}")
+        elif e["method"] == "item":
+            out.append(f"{data.items[e['item']]['name']} - {into}")
+        else:
+            out.append(f"Обмен на {data.species[e['partner']]['name']} - {into}")
     for f in data.fusions:
-        if c.species_id in f["inputs"]:
-            out.append(f"Крафт: {f['inputs'][c.species_id]} шт. - {data.species[f['result']]['name']}")
+        if species_id in f["inputs"]:
+            out.append(f"Крафт {f['inputs'][species_id]} шт. - {data.species[f['result']]['name']}")
     return out
+
+
+def evolution_hints(data, c):
+    return ["Эволюция: " + h for h in species_evolution_hints(data, c.species_id)]

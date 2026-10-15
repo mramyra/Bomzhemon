@@ -46,9 +46,9 @@ def _run(app, battle, tid, on_finish):
     app.push(BattleScene(app, battle, done))
 
 
-def start_wild(app, district, on_finish=None):
+def start_wild(app, district, on_finish=None, foe=None):
     st, d = app.state, app.data
-    foe = d.roll_encounter(district)
+    foe = foe or d.roll_encounter(district)
     st.seen.add(foe.species_id)
     _run(app, Battle(d, st.party, [foe], wild=True, bag=st.bag), None, on_finish)
 

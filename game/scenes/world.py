@@ -6,7 +6,7 @@ import pygame
 
 from game.scenes import flow
 from game.scenes.base import MessageScene, Scene
-from game.scenes.screens import BagScene, CraftScene, DexScene, PartyScene
+from game.scenes.screens import BagScene, CraftScene, DexScene, PartyScene, TradeScene
 from game.systems import save
 from game.ui.widgets import INK, Menu, panel, text
 from game.world.mapdata import DIRS, MapData
@@ -18,7 +18,7 @@ ENCOUNTER_CHANCE = 0.12  # шанс встречи за шаг по тайлу �
 ITEM_SPOT_FILL = 0.55    # доля точек, где в этой игре лежит предмет (по сиду сохранения)
 T, VIEW = 32, (480, 320)
 
-COATS = {"player": (96, 104, 124), "granny_zina": (176, 80, 120), "tramp_petya": (120, 100, 60), "leader_dump": (160, 50, 40)}
+COATS = {"trader": (70, 150, 110), "player": (96, 104, 124), "granny_zina": (176, 80, 120), "tramp_petya": (120, 100, 60), "leader_dump": (160, 50, 40)}
 
 
 def draw_person(surf, x, y, face, coat, hat=(40, 40, 50)):
@@ -35,6 +35,8 @@ def draw_person(surf, x, y, face, coat, hat=(40, 40, 50)):
 
 
 class WorldScene(Scene):
+    is_world = True
+
     def __init__(self, app):
         super().__init__(app)
         st, d = app.state, app.data
@@ -57,6 +59,13 @@ class WorldScene(Scene):
                 self.items[spot.id] = item
 
     # ---------------------------------------------------------------- логика
+    def teleport(self, x, y):
+        """Для консоли. Возвращает True, если клетка свободна."""
+        if self.map.blocked(x, y):
+            return False
+        self.x, self.y, self.moving, self.t = x, y, None, 0.0
+        return True
+
     def sync_pos(self):
         self.app.state.pos = {"map": DISTRICT, "x": self.x, "y": self.y}
 
@@ -129,6 +138,8 @@ class WorldScene(Scene):
             qty = 2 if item == "box" else 1
             st.add_item(item, qty)
             self._msg([f"В баке нашлось: {d.items[item]['name']} x{qty}."])
+        elif o.type == "trader":
+            self._msg(["Меняла: Есть что обменять? Кое-кто от обмена... меняется."], on_done=lambda: self.app.push(TradeScene(self.app)))
         elif o.type in ("trainer", "leader"):
             tid = o.props["trainer_id"]
             tr = d.trainers[tid]
@@ -167,6 +178,8 @@ class WorldScene(Scene):
             elif o.type == "dumpster":
                 opened = o.id in st.flags["opened"]
                 drawables.append((o.y * T, lambda sx=sx, sy=sy, op=opened: self._dumpster(surf, sx, sy, op)))
+            elif o.type == "trader":
+                drawables.append((o.y * T, lambda sx=sx, sy=sy: draw_person(surf, sx, sy, "down", COATS["trader"], (30, 80, 50))))
             elif o.type in ("trainer", "leader"):
                 tid = o.props["trainer_id"]
                 drawables.append((o.y * T, lambda sx=sx, sy=sy, o=o, tid=tid: draw_person(surf, sx, sy, o.props.get("facing", "down"), COATS.get(tid, (120, 120, 120)), (120, 30, 30) if o.type == "leader" else (40, 40, 50))))
