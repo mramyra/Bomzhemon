@@ -1,7 +1,7 @@
 """Мелкие UI-кирпичики: шрифты, рамки, текст, полоска HP, меню."""
-from pathlib import Path
-
 import pygame
+
+from game.core import paths
 
 INK = (34, 34, 48)
 PAPER = (246, 244, 236)
@@ -10,14 +10,13 @@ SHADE = (214, 210, 196)
 ACCENT = (200, 70, 60)
 GREEN, YELLOW, RED = (80, 190, 90), (230, 190, 50), (220, 70, 60)
 
-FONT_DIR = Path(__file__).resolve().parents[2] / "assets" / "fonts"
 _fonts = {}
 
 
 def font(size=16, bold=False):
     key = (size, bold)
     if key not in _fonts:
-        ttf = sorted(FONT_DIR.glob("*.ttf"))
+        ttf = sorted((paths.APP_DIR / "assets" / "fonts").glob("*.ttf")) or sorted((paths.RESOURCES / "assets" / "fonts").glob("*.ttf"))
         if ttf:
             _fonts[key] = pygame.font.Font(str(ttf[0]), size)
         else:   # на Windows есть segoeui/arial с кириллицей

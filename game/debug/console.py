@@ -7,6 +7,7 @@ import os
 import shlex
 
 from game.battle.creature import MAX_LEVEL, exp_for_level
+from game.battle import stats as S
 from game.systems import evolution, leveling, moveset, trade
 
 STATUSES = ["psn", "brn", "par", "slp", "none"]
@@ -111,10 +112,28 @@ class Console:
     def label(self, c):
         return f"{c.name} (Lv{c.level})"
 
+    def stat_key(self, arg, allow_all=False):
+        a = str(arg).lower()
+        if allow_all and a == "all":
+            return "all"
+        names = {k: k for k in S.STAT_KEYS}
+        names.update({v.lower(): k for k, v in S.STAT_RU.items()})
+        if a not in names:
+            raise CommandError(f"Характеристика «{arg}»: hp, atk, def, spa, spd, spe" + (" или all." if allow_all else "."))
+        return names[a]
+
+    def nature(self, arg):
+        a = str(arg).lower()
+        for nid, (name, up, down) in S.NATURES.items():
+            if a in (nid, name.lower()):
+                return nid
+        near = difflib.get_close_matches(a, list(S.NATURES), n=4)
+        raise CommandError(f"Характер «{arg}» не найден." + (f" Похожие: {', '.join(near)}" if near else " Список: list natures"))
+
     def pool(self, kind):
         d = self.data
-        return {"species": list(d.species), "item": list(d.items), "move": list(d.moves), "trainer": list(d.trainers),
-                "status": STATUSES, "list": ["species", "items", "moves", "trainers", "types"], "dex": ["all", "clear"]}.get(kind, [])
+        return {"stat": list(S.STAT_KEYS) + ["all"], "nature": list(S.NATURES),"species": list(d.species), "item": list(d.items), "move": list(d.moves), "trainer": list(d.trainers),
+                "status": STATUSES, "list": ["species", "items", "moves", "trainers", "types", "natures"], "dex": ["all", "clear"]}.get(kind, [])
 
     # ------------------------------------------------------------ автодополнение
     def complete(self, line):
@@ -160,10 +179,10 @@ def c_party(con, a):
     return rows or ["Команда пуста."]
 
 
-@cmd("storage", "storage", "Список заначки.")
+@cmd("storage", "storage", "Список существ в ПК.")
 def c_storage(con, a):
     rows = [f"{i}. {c.name} [{c.species_id}] Lv{c.level}" for i, c in enumerate(con.state.storage, 1)]
-    return rows or ["Заначка пуста."]
+    return rows or ["ПК пуст."]
 
 
 @cmd("info", "info <номер>", "Подробности существа: опыт, статы, приёмы.", ("int",), aliases=("i",))
@@ -175,14 +194,18 @@ def c_info(con, a):
     st = ", ".join(f"{k} {c.max_hp if k == 'hp' else c.stat(k)}" for k in ("hp", "atk", "def", "spa", "spd", "spe"))
     mv = ", ".join(f"{d.moves[m['id']]['name']} {m['pp']}/{m['max_pp']}" for m in c.moves)
     out = [f"{c.name} [{c.species_id}] {'/'.join(c.types)} Lv{c.level}  HP {c.hp}/{c.max_hp}  {c.status or 'в норме'}",
-           f"Опыт {c.exp} (до след. уровня {need - got if need else '-'})", st, f"Приёмы: {mv}"]
+           f"Опыт {c.exp} (до след. уровня {need - got if need else '-'})", st,
+           f"Характер: {S.nature_label(c.nature)}",
+           "IV: " + " ".join(f"{k}={c.iv[k]}" for k in S.STAT_KEYS) + f"  (сумма {c.iv_total}/186, {S.iv_grade(c.iv_total)})",
+           "EV: " + " ".join(f"{k}={c.ev[k]}" for k in S.STAT_KEYS) + f"  (всего {c.ev_total}/{S.EV_TOTAL_MAX})",
+           f"Приёмы: {mv}"]
     if c.pending_moves:
         out.append("Ждут выучки: " + ", ".join(c.pending_moves))
     out += moveset.evolution_hints(d, c)
     return out
 
 
-@cmd("give", "give <вид> [уровень=5] [кол-во=1]", "Выдать существо (в команду, если есть место, иначе в заначку).", ("species", "int", "int"))
+@cmd("give", "give <вид> [уровень=5] [кол-во=1]", "Выдать существо (в команду, если есть место, иначе в ПК).", ("species", "int", "int"))
 def c_give(con, a):
     if not a:
         raise CommandError("Укажи вид: give rat 10")
@@ -192,16 +215,16 @@ def c_give(con, a):
     out = []
     for _ in range(n):
         c = con.data.make_creature(sid, lvl)
-        out.append(f"Выдан {con.label(c)} -> {'команда' if con.state.add_creature(c) == 'party' else 'заначка'}")
-    return out if n <= 3 else [f"Выдано {n} x {con.data.species[sid]['name']} Lv{lvl} (команда/заначка)."]
+        out.append(f"Выдан {con.label(c)} -> {'команда' if con.state.add_creature(c) == 'party' else 'ПК'}")
+    return out if n <= 3 else [f"Выдано {n} x {con.data.species[sid]['name']} Lv{lvl} (команда/ПК)."]
 
 
-@cmd("giveall", "giveall [уровень=10]", "Выдать по одному существу каждого вида (в основном в заначку).", ("int",))
+@cmd("giveall", "giveall [уровень=10]", "Выдать по одному существу каждого вида (в основном в ПК).", ("int",))
 def c_giveall(con, a):
     lvl = con.num(a[0], 1, MAX_LEVEL, "уровень") if a else 10
     for sid in con.data.species:
         con.state.add_creature(con.data.make_creature(sid, lvl))
-    return [f"Выдано видов: {len(con.data.species)}. Заначка: {len(con.state.storage)}, команда: {len(con.state.party)}."]
+    return [f"Выдано видов: {len(con.data.species)}. В ПК: {len(con.state.storage)}, команда: {len(con.state.party)}."]
 
 
 @cmd("level", "level <номер> <уровень> [keep]", "Поставить уровень (опыт и приёмы пересобираются; keep - оставить приёмы).", ("int", "int", "keep"), aliases=("lvl",))
@@ -222,6 +245,48 @@ def c_level(con, a):
     if nxt:
         out.append(f"Можно эволюционировать: evolve {a[0]}  (или checkevo)")
     return out
+
+
+@cmd("iv", "iv <номер> <hp|atk|def|spa|spd|spe|all> <0-31>", "Поставить IV (врождённый потенциал).", ("int", "stat", "int"))
+def c_iv(con, a):
+    if len(a) < 3:
+        raise CommandError("iv <номер> <характеристика|all> <0-31>")
+    c, k, v = con.mon(a[0]), con.stat_key(a[1], True), con.num(a[2], 0, S.IV_MAX, "IV")
+    for key in (S.STAT_KEYS if k == "all" else [k]):
+        c.iv[key] = v
+    c.refresh_stats()
+    return [f"{c.name}: IV {' '.join(f'{x}={c.iv[x]}' for x in S.STAT_KEYS)}.  HP {c.hp}/{c.max_hp}"]
+
+
+@cmd("perfect", "perfect <номер>", "Все IV = 31.", ("int",))
+def c_perfect(con, a):
+    if not a:
+        raise CommandError("perfect <номер>")
+    return c_iv(con, [a[0], "all", "31"])
+
+
+@cmd("ev", "ev <номер> <hp|atk|def|spa|spd|spe|all> <0-252>", "Поставить EV (лимит 252 на характеристику, 510 всего - лишнее обрежется).", ("int", "stat", "int"))
+def c_ev(con, a):
+    if len(a) < 3:
+        raise CommandError("ev <номер> <характеристика|all> <0-252>")
+    c, k, v = con.mon(a[0]), con.stat_key(a[1], True), con.num(a[2], 0, S.EV_STAT_MAX, "EV")
+    for key in (S.STAT_KEYS if k == "all" else [k]):
+        c.ev[key] = 0 if k == "all" else c.ev[key]
+    total = sum(c.ev.values())
+    for key in (S.STAT_KEYS if k == "all" else [k]):
+        c.ev[key] = max(0, min(v, S.EV_TOTAL_MAX - (sum(c.ev.values()) - c.ev[key])))
+    c.refresh_stats()
+    return [f"{c.name}: EV {' '.join(f'{x}={c.ev[x]}' for x in S.STAT_KEYS)} (всего {c.ev_total}/{S.EV_TOTAL_MAX})."]
+
+
+@cmd("nature", "nature <номер> <характер>", "Сменить характер (id или русское имя). Список: list natures.", ("int", "nature"))
+def c_nature(con, a):
+    if len(a) < 2:
+        raise CommandError("nature <номер> <характер>")
+    c = con.mon(a[0])
+    c.nature = con.nature(a[1])
+    c.refresh_stats()
+    return [f"{c.name}: характер {S.nature_label(c.nature)}."]
 
 
 @cmd("exp", "exp <номер> <кол-во>", "Начислить опыт как после боя (с повышением уровней и ждущими приёмами).", ("int", "int"))
@@ -255,8 +320,24 @@ def c_evolve(con, a):
             into, how = c.species["evolutions"][0]["into"], "условие проигнорировано"
     if not into:
         return [f"{c.name} не эволюционирует. (Вид можно указать явно: evolve {a[0]} <вид>)"]
-    evolution.evolve(d, c, into)
+    evolution.apply(d, con.state, c, into)
     return [f"{old} -> {c.species['name']} ({how}). HP {c.hp}/{c.max_hp}."]
+
+
+@cmd("evoanim", "evoanim <номер> [вид]", "Показать анимацию эволюции без изменений (консоль закроется; X - отмена). Для настройки анимации.", ("int", "species"))
+def c_evoanim(con, a):
+    if not a:
+        raise CommandError("evoanim <номер> [вид]")
+    c, d = con.mon(a[0]), con.data
+    if len(a) > 1:
+        into = con.species(a[1])
+    elif c.species["evolutions"]:
+        into = c.species["evolutions"][0]["into"]
+    else:
+        raise CommandError(f"{c.name} не эволюционирует - укажи вид: evoanim {a[0]} <вид>")
+    con.state
+    con.hook("evolution_anim")(c, into)
+    return [f"Анимация: {c.name} -> {d.species[into]['name']}."]
 
 
 @cmd("checkevo", "checkevo", "Прогнать проверку эволюций по уровню у всей команды (как после боя).")
@@ -266,7 +347,7 @@ def c_checkevo(con, a):
         into = evolution.level_evolution(c)
         while into:
             old = c.name
-            evolution.evolve(con.data, c, into)
+            evolution.apply(con.data, con.state, c, into)
             out.append(f"{old} эволюционировал в {c.species['name']}!")
             into = evolution.level_evolution(c)
     return out or ["Эволюций нет."]
@@ -283,7 +364,7 @@ def c_useitem(con, a):
         if not into:
             return [f"{c.name} не реагирует на «{it['name']}»."]
         old = c.name
-        evolution.evolve(con.data, c, into)
+        evolution.apply(con.data, con.state, c, into)
         return [f"{old} -> {c.species['name']} (предмет «{it['name']}»)."]
     if it["kind"] == "heal":
         c.hp = min(c.max_hp, c.hp + it["amount"])
@@ -367,19 +448,19 @@ def c_teach(con, a):
     return [f"{c.name} выучил «{name}»." if c.learn(con.data, mid) else f"{c.name}: «{name}» ждёт в очереди выучки (откроется после боя или в окне Команда)."]
 
 
-@cmd("store", "store <номер>", "Убрать существо из команды в заначку.", ("int",))
+@cmd("store", "store <номер>", "Убрать существо из команды в ПК.", ("int",))
 def c_store(con, a):
     st = con.state
     if not a:
         raise CommandError("store <номер>")
     if len(st.party) <= 1:
-        raise CommandError("Последнего бойца в заначку не убрать.")
+        raise CommandError("Последнего бойца в ПК не убрать.")
     c = st.party.pop(con.num(a[0], 1, len(st.party), "номер существа") - 1)
     st.storage.append(c)
-    return [f"{c.name} -> заначка."]
+    return [f"{c.name} -> ПК."]
 
 
-@cmd("take", "take <номер в заначке>", "Достать существо из заначки в команду.", ("int",))
+@cmd("take", "take <номер в ПК>", "Достать существо из ПК в команду.", ("int",))
 def c_take(con, a):
     st = con.state
     if not a:
@@ -387,8 +468,8 @@ def c_take(con, a):
     if len(st.party) >= 6:
         raise CommandError("Команда полна (6).")
     if not st.storage:
-        raise CommandError("Заначка пуста.")
-    c = st.storage.pop(con.num(a[0], 1, len(st.storage), "номер в заначке") - 1)
+        raise CommandError("ПК пуст.")
+    c = st.storage.pop(con.num(a[0], 1, len(st.storage), "номер в ПК") - 1)
     st.party.append(c)
     return [f"{c.name} -> команда."]
 
@@ -423,9 +504,10 @@ def c_dex(con, a):
 @cmd("list", "list <species|items|moves|trainers|types>", "Показать id из данных.", ("list",), aliases=("ls",))
 def c_list(con, a):
     d = con.data
-    tables = {"species": d.species, "items": d.items, "moves": d.moves, "trainers": d.trainers, "types": d.types}
+    tables = {"species": d.species, "items": d.items, "moves": d.moves, "trainers": d.trainers, "types": d.types,
+              "natures": {k: {"name": nm} for k, (nm, _, _) in S.NATURES.items()}}
     if not a or a[0] not in tables:
-        raise CommandError("list <species|items|moves|trainers|types>")
+        raise CommandError("list <species|items|moves|trainers|types|natures>")
     t = tables[a[0]]
     return [", ".join(f"{k} ({v.get('name', k)})" for k, v in t.items())]
 
@@ -462,6 +544,13 @@ def c_tp(con, a):
         raise CommandError("tp <x> <y>")
     x, y = con.num(a[0], 0, 999, "x"), con.num(a[1], 0, 999, "y")
     return [f"Телепорт в ({x}, {y})." if con.hook("teleport")(x, y) else "Туда нельзя (стена или за картой)."]
+
+
+@cmd("pc", "pc", "Открыть ПК (консоль закроется).")
+def c_pc(con, a):
+    con.state            # нужна идущая игра
+    con.hook("pc")()
+    return ["ПК открыт."]
 
 
 @cmd("save", "save", "Сохранить игру в слот 1.")

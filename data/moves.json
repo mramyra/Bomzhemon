@@ -527,5 +527,94 @@
   "pp": 15,
   "priority": 0,
   "effect": {}
+ },
+ "shell": {
+  "name": "Спрятаться в панцирь",
+  "type": "poison",
+  "category": "status",
+  "power": 0,
+  "accuracy": null,
+  "pp": 20,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "self",
+    "stat": "spd",
+    "stages": 2
+   }
+  }
+ },
+ "shell_bash": {
+  "name": "Удар панцирем",
+  "type": "poison",
+  "category": "physical",
+  "power": 60,
+  "accuracy": 100,
+  "pp": 20,
+  "priority": 0,
+  "effect": {}
+ },
+ "sewer_slam": {
+  "name": "Канализационный замес",
+  "type": "poison",
+  "category": "physical",
+  "power": 80,
+  "accuracy": 90,
+  "pp": 10,
+  "priority": 0,
+  "effect": {
+   "status": {
+    "id": "psn",
+    "chance": 30
+   }
+  }
+ },
+ "nunchaku": {
+  "name": "Нунчаки",
+  "type": "human",
+  "category": "physical",
+  "power": 70,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {}
+ },
+ "ninja_strike": {
+  "name": "Ниндзя-удар",
+  "type": "human",
+  "category": "physical",
+  "power": 60,
+  "accuracy": 100,
+  "pp": 10,
+  "priority": 1,
+  "effect": {}
+ },
+ "smoke_bomb": {
+  "name": "Дымовая шашка",
+  "type": "human",
+  "category": "status",
+  "power": 0,
+  "accuracy": 100,
+  "pp": 15,
+  "priority": 0,
+  "effect": {
+   "stat": {
+    "who": "foe",
+    "stat": "spe",
+    "stages": -2
+   }
+  }
+ },
+ "pizza_break": {
+  "name": "Перерыв на пиццу",
+  "type": "human",
+  "category": "status",
+  "power": 0,
+  "accuracy": null,
+  "pp": 5,
+  "priority": 0,
+  "effect": {
+   "heal": 40
+  }
  }
 }

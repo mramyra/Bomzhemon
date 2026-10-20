@@ -6,5 +6,14 @@
    "krysa": 5
   },
   "result": "krysiny_korol"
+ },
+ {
+  "id": "cherepashki_nindzya",
+  "name": "Черепашки-ниндзя",
+  "inputs": {
+   "cherepaha": 4,
+   "krysa": 1
+  },
+  "result": "cherepashki_nindzya"
  }
 ]

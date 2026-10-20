@@ -1,17 +1,20 @@
 """Мир: ходьба по карте из Tiled, встречи, предметы, бочка, баки, тренеры и бомжлидер."""
 import random
-from pathlib import Path
 
 import pygame
 
+from game.core import paths
 from game.scenes import flow
 from game.scenes.base import MessageScene, Scene
+from game.scenes.exit_flow import ask_exit
+from game.scenes.pc import PCScene
+from game.scenes.saveload import SlotScene
 from game.scenes.screens import BagScene, CraftScene, DexScene, PartyScene, TradeScene
 from game.systems import save
 from game.ui.widgets import INK, Menu, panel, text
 from game.world.mapdata import DIRS, MapData
 
-MAP_PATH = Path(__file__).resolve().parents[2] / "maps" / "dump.tmj"
+MAP_PATH = paths.asset("maps/dump.tmj")
 DISTRICT = "dump"
 SPEED = 5.0             # клеток в секунду
 ENCOUNTER_CHANCE = 0.12  # шанс встречи за шаг по тайлу с encounter
@@ -49,7 +52,8 @@ class WorldScene(Scene):
         self.x, self.y, self.face, self.moving, self.t, self.last_dir = x, y, "down", None, 0.0, None
         self.rng = random.Random()
         ts = self.map.tileset
-        self.sheet = pygame.image.load(str(ts["image"])).convert_alpha() if ts and ts["image"].exists() else None
+        img = (ts["image"] if ts["image"].exists() else paths.asset("assets/tiles/" + ts["image"].name)) if ts else None
+        self.sheet = pygame.image.load(str(img)).convert_alpha() if img and img.exists() else None
         # расстановка предметов зависит только от сида сохранения - перезагрузка не меняет карту
         r = random.Random(st.seed)
         self.items = {}
@@ -128,7 +132,9 @@ class WorldScene(Scene):
         if o.type == "barrel":
             st.heal_party()
             st.flags["checkpoint"] = [self.x, self.y]
-            self._msg(["Погрелся у бочки. Команда отдохнула.", "Теперь ты просыпаешься тут, если что."])
+            self.sync_pos()
+            ok = save.autosave(st, location=d.districts[DISTRICT]["name"])
+            self._msg(["Погрелся у бочки. Команда отдохнула.", "Теперь ты просыпаешься тут, если что." + (" (Автосохранение.)" if ok else "")])
         elif o.type == "dumpster":
             if o.id in st.flags["opened"]:
                 self._msg(["Пусто. Тут уже рылись."])
@@ -138,6 +144,8 @@ class WorldScene(Scene):
             qty = 2 if item == "box" else 1
             st.add_item(item, qty)
             self._msg([f"В баке нашлось: {d.items[item]['name']} x{qty}."])
+        elif o.type == "pc":
+            self._msg(["Выброшенный системник. Экран мигает, а внутри - все твои существа."], on_done=lambda: self.app.push(PCScene(self.app)))
         elif o.type == "trader":
             self._msg(["Меняла: Есть что обменять? Кое-кто от обмена... меняется."], on_done=lambda: self.app.push(TradeScene(self.app)))
         elif o.type in ("trainer", "leader"):
@@ -178,6 +186,8 @@ class WorldScene(Scene):
             elif o.type == "dumpster":
                 opened = o.id in st.flags["opened"]
                 drawables.append((o.y * T, lambda sx=sx, sy=sy, op=opened: self._dumpster(surf, sx, sy, op)))
+            elif o.type == "pc":
+                drawables.append((o.y * T, lambda sx=sx, sy=sy: self._pc(surf, sx, sy)))
             elif o.type == "trader":
                 drawables.append((o.y * T, lambda sx=sx, sy=sy: draw_person(surf, sx, sy, "down", COATS["trader"], (30, 80, 50))))
             elif o.type in ("trainer", "leader"):
@@ -201,6 +211,15 @@ class WorldScene(Scene):
         pygame.draw.rect(surf, (255, 255, 255), (x + 14, y + 17, 4, 3))
 
     @staticmethod
+    def _pc(surf, x, y):
+        pygame.draw.rect(surf, (150, 110, 70), (x + 3, y + 21, 26, 9))             # ящик-подставка
+        pygame.draw.rect(surf, INK, (x + 3, y + 21, 26, 9), 1)
+        pygame.draw.rect(surf, (60, 64, 76), (x + 6, y + 5, 20, 16))               # монитор
+        pygame.draw.rect(surf, INK, (x + 6, y + 5, 20, 16), 2)
+        pygame.draw.rect(surf, (120, 190, 230), (x + 9, y + 8, 14, 9))             # экран
+        pygame.draw.rect(surf, (230, 240, 250), (x + 10, y + 9, 5, 2))
+
+    @staticmethod
     def _barrel(surf, x, y):
         pygame.draw.rect(surf, (52, 52, 58), (x + 7, y + 10, 18, 20))
         pygame.draw.rect(surf, INK, (x + 7, y + 10, 18, 20), 2)
@@ -221,7 +240,7 @@ class PauseScene(Scene):
     def __init__(self, app, world):
         super().__init__(app)
         self.world = world
-        self.items = ["Команда", "Сумка", "Бомждекс", "Крафт", "Сохранить", "Полный экран", "Закрыть"]
+        self.items = ["Команда", "Сумка", "Бомждекс", "Крафт", "Сохранить", "Полный экран", "В главное меню", "Выйти из игры", "Закрыть"]
         self.menu = Menu(self.items)
 
     def handle(self, a):
@@ -240,18 +259,20 @@ class PauseScene(Scene):
             elif it == "Крафт":
                 app.push(CraftScene(app))
             elif it == "Сохранить":
-                self.world.sync_pos()
-                save.save(app.state, 1)
-                app.push(MessageScene(app, ["Сохранено."]))
+                app.push(SlotScene(app, "save", prepare=self.world.sync_pos))
             elif it == "Полный экран":
                 app.toggle_fullscreen()
+            elif it == "В главное меню":
+                ask_exit(app, True)
+            elif it == "Выйти из игры":
+                ask_exit(app, False)
             else:
                 app.pop()
 
     def draw(self, surf):
         st = self.app.state
-        panel(surf, (330, 10, 140, 190))
-        self.menu.draw(surf, 340, 20, row_h=24, size=15)
-        panel(surf, (330, 206, 140, 50))
-        text(surf, f"Монеты: {st.money}", 340, 212, 13)
-        text(surf, f"Значки: {len(st.badges)}  Декс: {len(st.caught)}", 340, 232, 13)
+        panel(surf, (320, 8, 152, 244))
+        self.menu.draw(surf, 328, 16, row_h=26, size=14)
+        panel(surf, (320, 258, 152, 54))
+        text(surf, f"Монеты: {st.money}", 330, 262, 13)
+        text(surf, f"Значки: {len(st.badges)}  Декс: {len(st.caught)}", 330, 282, 13)

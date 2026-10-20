@@ -43,3 +43,7 @@ rytsekrys         Рыцекрыс            rodent/human
 krysiny_korol     Крысиный король     rodent/poison
 krysolet          Крысолет            rodent/bird
 gniekrys          Гниекрыс            poison/rodent
+cherepashonok     Черепашонок         poison
+cherepaha         Черепаха            poison
+mutapaha          Мутапаха            poison
+cherepashki_nindzyaЧерепашки-ниндзя    poison/human

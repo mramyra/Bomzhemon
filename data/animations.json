@@ -1,0 +1,12 @@
+{
+ "evolution": {
+  "intro": 1.6,
+  "flicker": 4.2,
+  "burst": 0.8,
+  "reveal": 1.3,
+  "flicker_hz": [1.5, 12.0],
+  "sprite_size": 128,
+  "fps": 12,
+  "particles": true
+ }
+}

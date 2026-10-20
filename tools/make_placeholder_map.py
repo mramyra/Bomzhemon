@@ -168,6 +168,10 @@ def make(seed):
         x, y = near[0] if near else cand[0]
         cand.remove((x, y))
         objs.append(("trader", "Меняла", x, y, {}))
+        close = [c for c in cand if 4 <= abs(c[0] - start[0]) + abs(c[1] - start[1]) <= 9]
+        x, y = close[0] if close else cand[0]
+        cand.remove((x, y))
+        objs.append(("pc", "ПК", x, y, {}))
         for _ in range(8):
             x, y = cand.pop()
             objs.append(("dumpster", "dumpster", x, y, {}))

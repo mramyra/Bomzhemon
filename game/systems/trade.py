@@ -19,8 +19,9 @@ def tradable(data, state):
     return [(c, o) for c in state.party + state.storage for o in [options_for(data, c.species_id)] if o]
 
 
-def execute(data, state, give, receive_species, into):
-    """Меняет give на нового получаемого. Новое существо ставится на место отданного. Возвращает его."""
+def execute(data, state, give, receive_species, into, animate=False):
+    """Меняет give на нового получаемого, ставит его на место отданного. Возвращает его.
+    animate=True: эволюцию не выполняет, а возвращает (существо, во_что_эволюционирует) - экран сам проиграет анимацию и применит её."""
     if (receive_species, into) not in options_for(data, give.species_id):
         raise ValueError("такого обмена нет")
     pool = state.party if give in state.party else state.storage
@@ -29,9 +30,10 @@ def execute(data, state, give, receive_species, into):
     new = data.make_creature(receive_species, give.level)
     given_species = give.species_id
     assert evolution.trade_evolution(new, given_species) == into
-    evolution.evolve(data, new, into)
-    new.hp = new.max_hp
     pool[pool.index(give)] = new
-    state.seen.update({receive_species, into})
-    state.caught.add(into)
+    state.seen.add(receive_species)
+    if animate:
+        return new, into
+    evolution.apply(data, state, new, into)
+    new.hp = new.max_hp
     return new

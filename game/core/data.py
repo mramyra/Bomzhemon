@@ -3,7 +3,9 @@ import json
 import random
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+from game.core import paths
+
+DATA_DIR = paths.RESOURCES / "data"
 
 
 class GameData:
@@ -21,6 +23,7 @@ class GameData:
         self.fusions = load("fusions.json")
         self.trainers = load("trainers.json")
         self.districts = load("districts.json")
+        self.animations = load("animations.json")
 
     # ---- типы
     def type_mult(self, atk_type, def_types):
@@ -32,9 +35,12 @@ class GameData:
         return m
 
     # ---- фабрики
-    def make_creature(self, species_id, level):
+    flat_stats = False      # True: все IV=15, характер нейтральный (тесты и баланс-отчёты)
+
+    def make_creature(self, species_id, level, rng=None, iv=None, nature=None, ev=None):
+        """iv: None - случайные 0..31 (у легендарных 3 характеристики по 31); число - одинаковые; словарь - свои."""
         from game.battle.creature import Creature
-        return Creature.create(self, species_id, level)
+        return Creature.create(self, species_id, level, rng=rng, iv=iv, ev=ev, nature=nature, flat=self.flat_stats)
 
     def roll_encounter(self, district_id, rng=None):
         rng = rng or random
@@ -49,7 +55,8 @@ class GameData:
 
     # ---- проверка целостности (запускается в тестах)
     def validate(self):
-        errs = []
+        from game.systems.evolution_anim import make_config, validate_config
+        errs = validate_config(make_config(self.animations.get("evolution")))
         for tid, row in self.chart.items():
             if tid not in self.types:
                 errs.append(f"chart: неизвестный тип {tid}")

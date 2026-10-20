@@ -1,0 +1,302 @@
+{
+ "version": 2,
+ "party": [
+  {
+   "species": "kotenok",
+   "level": 6,
+   "exp": 253,
+   "hp": 22,
+   "status": null,
+   "status_turns": 0,
+   "nickname": null,
+   "iv": {
+    "hp": 24,
+    "atk": 18,
+    "def": 2,
+    "spa": 4,
+    "spd": 6,
+    "spe": 24
+   },
+   "ev": {
+    "hp": 3,
+    "atk": 0,
+    "def": 0,
+    "spa": 1,
+    "spd": 0,
+    "spe": 0
+   },
+   "nature": "rash",
+   "moves": [
+    {
+     "id": "scratch",
+     "pp": 35,
+     "max_pp": 35
+    },
+    {
+     "id": "hiss",
+     "pp": 25,
+     "max_pp": 25
+    },
+    {
+     "id": "claws",
+     "pp": 25,
+     "max_pp": 25
+    }
+   ],
+   "pending_moves": []
+  },
+  {
+   "species": "gusenitsa",
+   "level": 3,
+   "exp": 54,
+   "hp": 17,
+   "status": null,
+   "status_turns": 0,
+   "nickname": null,
+   "iv": {
+    "hp": 21,
+    "atk": 29,
+    "def": 9,
+    "spa": 2,
+    "spd": 6,
+    "spe": 26
+   },
+   "ev": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 1,
+    "spd": 0,
+    "spe": 0
+   },
+   "nature": "lonely",
+   "moves": [
+    {
+     "id": "sting",
+     "pp": 35,
+     "max_pp": 35
+    },
+    {
+     "id": "crawl",
+     "pp": 30,
+     "max_pp": 30
+    }
+   ],
+   "pending_moves": []
+  },
+  {
+   "species": "cherepashonok",
+   "level": 4,
+   "exp": 87,
+   "hp": 20,
+   "status": null,
+   "status_turns": 0,
+   "nickname": null,
+   "iv": {
+    "hp": 21,
+    "atk": 0,
+    "def": 31,
+    "spa": 17,
+    "spd": 31,
+    "spe": 20
+   },
+   "ev": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0,
+    "spe": 1
+   },
+   "nature": "naughty",
+   "moves": [
+    {
+     "id": "drool",
+     "pp": 25,
+     "max_pp": 25
+    },
+    {
+     "id": "shell",
+     "pp": 20,
+     "max_pp": 20
+    }
+   ],
+   "pending_moves": []
+  },
+  {
+   "species": "krysa",
+   "level": 3,
+   "exp": 27,
+   "hp": 16,
+   "status": null,
+   "status_turns": 0,
+   "nickname": null,
+   "iv": {
+    "hp": 22,
+    "atk": 30,
+    "def": 0,
+    "spa": 6,
+    "spd": 29,
+    "spe": 0
+   },
+   "ev": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0,
+    "spe": 0
+   },
+   "nature": "serious",
+   "moves": [
+    {
+     "id": "gnaw",
+     "pp": 35,
+     "max_pp": 35
+    },
+    {
+     "id": "squeak",
+     "pp": 30,
+     "max_pp": 30
+    }
+   ],
+   "pending_moves": []
+  },
+  {
+   "species": "nedopchel",
+   "level": 6,
+   "exp": 255,
+   "hp": 22,
+   "status": null,
+   "status_turns": 0,
+   "nickname": null,
+   "iv": {
+    "hp": 25,
+    "atk": 28,
+    "def": 15,
+    "spa": 21,
+    "spd": 9,
+    "spe": 28
+   },
+   "ev": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "spa": 0,
+    "spd": 0,
+    "spe": 1
+   },
+   "nature": "impish",
+   "moves": [
+    {
+     "id": "sting",
+     "pp": 35,
+     "max_pp": 35
+    },
+    {
+     "id": "crawl",
+     "pp": 30,
+     "max_pp": 30
+    },
+    {
+     "id": "buzz",
+     "pp": 20,
+     "max_pp": 20
+    }
+   ],
+   "pending_moves": []
+  }
+ ],
+ "storage": [],
+ "bag": {
+  "box": 7,
+  "milk": 3,
+  "bait": 2,
+  "maggots": 1
+ },
+ "money": 0,
+ "badges": [],
+ "seen": [
+  "cherepashonok",
+  "gusenitsa",
+  "kotenok",
+  "krysa",
+  "lisenok",
+  "nedopchel",
+  "shchenok"
+ ],
+ "caught": [
+  "cherepashonok",
+  "gusenitsa",
+  "kotenok",
+  "krysa",
+  "nedopchel"
+ ],
+ "defeated": [],
+ "pos": {
+  "map": "dump",
+  "x": 5,
+  "y": 4
+ },
+ "flags": {
+  "picked": [
+   33,
+   20,
+   16,
+   30,
+   26,
+   27,
+   41,
+   19,
+   40
+  ],
+  "opened": [
+   15,
+   12,
+   13,
+   11,
+   10
+  ],
+  "checkpoint": [
+   5,
+   4
+  ]
+ },
+ "seed": 2144346808,
+ "play_seconds": 509.0030000000485,
+ "meta": {
+  "saved_at": 1792401137.57927,
+  "play_seconds": 509,
+  "badges": 0,
+  "dex": 5,
+  "money": 0,
+  "location": "Свалка",
+  "party": [
+   {
+    "species": "kotenok",
+    "name": "Котёнок",
+    "level": 6
+   },
+   {
+    "species": "gusenitsa",
+    "name": "Гусеница",
+    "level": 3
+   },
+   {
+    "species": "cherepashonok",
+    "name": "Черепашонок",
+    "level": 4
+   },
+   {
+    "species": "krysa",
+    "name": "Крыса",
+    "level": 3
+   },
+   {
+    "species": "nedopchel",
+    "name": "Недопчел",
+    "level": 6
+   }
+  ]
+ }
+}

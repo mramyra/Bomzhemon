@@ -4,6 +4,8 @@ import pygame
 from game.debug.console import Console
 from game.scenes import flow
 from game.scenes.base import Scene
+from game.scenes.evolution_scene import EvolutionScene
+from game.scenes.pc import PCScene
 from game.scenes.world import DISTRICT
 from game.systems import save
 from game.ui.widgets import mono
@@ -54,9 +56,17 @@ class ConsoleScene(Scene):
             w = self._world()
             if w:
                 w.sync_pos()
-            save.save(app.state, 1)
+            save.save(app.state, app.state.slot or 1, location=app.data.districts.get(app.state.pos.get("map"), {}).get("name", ""))
 
-        hooks = {"close": self.close, "battle": battle, "trainer": trainer, "save": do_save}
+        def evo_anim(c, into):
+            self.close()
+            app.push(EvolutionScene(app, c, into, cancellable=True, cause="preview", preview=True))
+
+        def open_pc():
+            self.close()
+            app.push(PCScene(app))
+
+        hooks = {"close": self.close, "battle": battle, "trainer": trainer, "save": do_save, "pc": open_pc, "evolution_anim": evo_anim}
         if self._world():
             hooks["teleport"] = lambda x, y: self._world().teleport(x, y)
             hooks["pos"] = lambda: (self._world().x, self._world().y)

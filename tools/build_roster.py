@@ -1,4 +1,4 @@
-"""ОДНОРАЗОВЫЙ генератор data/species.json по таблице «Бомжекимон» (44 существа).
+"""ОДНОРАЗОВЫЙ генератор data/species.json по таблице «Бомжекимон» (48 существ).
 ВНИМАНИЕ: перезаписывает data/species.json. После первой генерации правь JSON напрямую.
 Статы здесь - заготовка: сумма статов по стадии развития x профиль роли. Баланс: python -m tools.balance_report"""
 import json
@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from game.battle.stats import default_ev_yield  # noqa: E402
 
 ROLES = {  # hp, atk, def, spa, spd, spe
     "bal": (1, 1, 1, 1, 1, 1), "fast": (0.8, 1.1, 0.8, 0.8, 0.8, 1.7), "tank": (1.4, 0.9, 1.4, 0.7, 1.1, 0.5),
@@ -71,6 +73,10 @@ R = {
  "krysiny_korol": ("Крысиный король", ["rodent", "poison"], "brute", "k", 0, ["rat_scuffle", "expired", "squeak", "play_dead", "scandal"], [], "Пять крыс, одна судьба. Получается только крафтом."),
  "krysolet": ("Крысолет", ["rodent", "bird"], "fast", "f1", 0, ["gnaw", "wing_flap", "dive_bomb", "quick_gnaw"], [], "Крыса, которая посмотрела на голубей и решила: могу."),
  "gniekrys": ("Гниекрыс", ["poison", "rodent"], "mage", "f1", 0, ["rot_bite", "shawarma", "gnaw", "cologne"], [], "Пахнет так, что враг сдаётся первым."),
+ "cherepashonok": ("Черепашонок", ["poison"], "tank", "b", 0, ["drool", "shell", "shell_bash", "cologne", "sewer_slam"], [(L, 20, "cherepaha")], "Медленно растёт. Быстро обижается."),
+ "cherepaha": ("Черепаха", ["poison"], "tank", "m", 0, ["shell_bash", "shell", "drool", "cologne", "sewer_slam"], [(I, "ooze", "mutapaha")], "Носит дом на себе. Платит за него всё равно."),
+ "mutapaha": ("Мутапаха", ["poison"], "mage", "f1", 0, ["shawarma", "cologne", "shell", "shell_bash", "expired"], [], "Искупалась, где не надо. Теперь светится и ни за что не отвечает."),
+ "cherepashki_nindzya": ("Черепашки-ниндзя", ["poison", "human"], "swarm", "k", 0, ["nunchaku", "ninja_strike", "smoke_bomb", "pizza_break", "sewer_slam"], [], "Четыре брата, одна пицца и крыса-наставник. Метод проверенный."),
 }
 
 
@@ -90,6 +96,7 @@ def build():
                 evolutions.append({"method": T, "partner": e[1], "into": e[2]})
         out[sid] = {"name": name, "types": types, "base": base, "catch_rate": catch, "base_exp": exp,
                     "learnset": [[lv, m] for lv, m in zip(sched, moves)], "evolutions": evolutions, "desc": desc}
+        out[sid]["ev_yield"] = default_ev_yield(out[sid])      # правится вручную, например {"spe": 2}
         if tier == "L":
             out[sid]["legendary"] = True
     return out
@@ -97,7 +104,7 @@ def build():
 
 if __name__ == "__main__":
     sp = build()
-    assert len(sp) == 44, len(sp)
+    assert len(sp) == 48, len(sp)
     with open(ROOT / "data" / "species.json", "w", encoding="utf-8") as f:
         json.dump(sp, f, ensure_ascii=False, indent=1)
     names = ["# id -> имя (для файлов спрайтов: assets/sprites/creatures/<id>.png)"]

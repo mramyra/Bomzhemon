@@ -17,6 +17,7 @@ NORM_BST, LEVEL = 360, 30
 def normalized(d):
     nd = copy.copy(d)
     nd.species = copy.deepcopy(d.species)
+    nd.flat_stats = True
     for s in nd.species.values():
         tot = sum(s["base"].values())
         s["base"] = {k: max(10, round(v * NORM_BST / tot)) for k, v in s["base"].items()}

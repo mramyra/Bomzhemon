@@ -18,6 +18,8 @@ class PlayerState:
         self.flags = {}
         self.seed = random.randrange(2 ** 31)   # сид расстановки существ и предметов на карте
         self.play_seconds = 0
+        self.slot = None                # слот, из/в который сохранялись в этой сессии (в файл не пишется)
+        self.loaded_from_backup = False
 
     def add_creature(self, c):
         """Возвращает 'party' или 'storage'."""

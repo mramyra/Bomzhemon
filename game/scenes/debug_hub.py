@@ -1,6 +1,7 @@
 """Отладочный хаб: быстрые бои без ходьбы по карте. Удобно проверять баланс и эволюции."""
 from game.scenes.base import MessageScene, Scene
 from game.scenes import flow
+from game.scenes.pc import PCScene
 from game.scenes.screens import BagScene, CraftScene, DexScene, PartyScene
 from game.systems import save
 from game.ui.widgets import INK, PAPER, Menu, text
@@ -11,7 +12,7 @@ DISTRICT = "dump"
 class HubScene(Scene):
     def __init__(self, app):
         super().__init__(app)
-        self.items = ["Дикий бой", "Бой с Михалычем (лидер)", "Бочка (вылечить всех)", "Команда", "Сумка", "Бомждекс", "Крафт", "В главное меню"]
+        self.items = ["Дикий бой", "Бой с Михалычем (лидер)", "Бочка (вылечить всех)", "ПК", "Команда", "Сумка", "Бомждекс", "Крафт", "В главное меню"]
         self.menu = Menu(self.items)
 
     def _guard(self):
@@ -33,16 +34,18 @@ class HubScene(Scene):
             st.heal_party()
             app.push(MessageScene(app, ["Погрелся у бочки. Команда как новенькая."]))
         elif i == 3:
-            app.push(PartyScene(app))
+            app.push(PCScene(app))
         elif i == 4:
-            app.push(BagScene(app))
+            app.push(PartyScene(app))
         elif i == 5:
-            app.push(DexScene(app))
+            app.push(BagScene(app))
         elif i == 6:
-            app.push(CraftScene(app))
+            app.push(DexScene(app))
         elif i == 7:
-            from game.scenes.title import TitleScene
-            app.replace(TitleScene(app))
+            app.push(CraftScene(app))
+        elif i == 8:
+            from game.scenes.title import go_title
+            go_title(app)
 
     def draw(self, surf):
         surf.fill(PAPER)

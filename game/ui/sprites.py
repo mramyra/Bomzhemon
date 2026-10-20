@@ -1,11 +1,11 @@
 """Спрайты существ. Есть assets/sprites/creatures/<id>.png - берём его, иначе рисуем заглушку по типам."""
-from pathlib import Path
-
 import pygame
+
+from game.core import paths
 
 from game.ui.widgets import INK, font
 
-DIR = Path(__file__).resolve().parents[2] / "assets" / "sprites" / "creatures"
+REL = "assets/sprites/creatures/"
 _cache = {}
 
 
@@ -32,7 +32,7 @@ def creature_sprite(data, sid, size, back=False):
     """back=True: спрайт со спины (<id>_back.png); если файла нет - зеркало переднего."""
     key = (sid, size, back)
     if key not in _cache:
-        p, pb = DIR / f"{sid}.png", DIR / f"{sid}_back.png"
+        p, pb = paths.asset(f"{REL}{sid}.png"), paths.asset(f"{REL}{sid}_back.png")
         if back and pb.exists():
             img = pygame.transform.smoothscale(pygame.image.load(str(pb)).convert_alpha(), (size, size))
         else:

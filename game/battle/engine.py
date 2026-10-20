@@ -11,6 +11,7 @@
 import math
 import random
 
+from game.battle import stats
 from game.battle.creature import STAGE_KEYS
 from game.systems import leveling
 
@@ -223,6 +224,8 @@ class Battle:
                 self.msg(ev, "Малоэффективно...")
             if self._damage(foe, dmg, ev):
                 return  # цель выбыла
+        if "heal" in fx:
+            self._heal_self(side, fx["heal"], ev)
         if "status" in fx and self.rng.randint(1, 100) <= fx["status"]["chance"]:
             self._try_status(foe, fx["status"]["id"], ev, forced=move["category"] == "status")
         if "confuse" in fx and foe.confused == 0 and self.rng.randint(1, 100) <= fx["confuse"]:
@@ -265,6 +268,16 @@ class Battle:
             self._faint(side, ev)
             return True
         return False
+
+    def _heal_self(self, side, pct, ev):
+        m = side.mon
+        if m.hp >= m.max_hp:
+            self.msg(ev, f"{self._who(side)} и так в полном порядке.")
+            return
+        before = m.hp
+        m.hp = min(m.max_hp, m.hp + max(1, m.max_hp * pct // 100))
+        ev.append({"t": "hp", "side": side.name, "from": before, "to": m.hp, "max": m.max_hp})
+        self.msg(ev, f"{self._who(side)} подкрепился.")
 
     def _try_status(self, side, status, ev, forced=False):
         m = side.mon
@@ -329,8 +342,10 @@ class Battle:
         if not winners:
             return
         share = max(1, total // len(winners))
+        gain = stats.ev_yield(foe.species)
         for c in winners:
             self.msg(ev, f"{c.name} получает {share} опыта.")
+            c.gain_ev(gain)
             for kind, val in leveling.apply_exp(self.data, c, share):
                 if kind == "level":
                     self.msg(ev, f"{c.name} вырос до {val} уровня!")
@@ -427,6 +442,8 @@ class Battle:
 
         def score(i):
             mv = self.data.moves[mon.moves[i]["id"]]
+            if "heal" in mv["effect"]:
+                return 70 if mon.hp < mon.max_hp * 0.5 else 1
             if mv["category"] == "status":
                 return 25 if not tgt.status else 5
             s = mv["power"] * self.data.type_mult(mv["type"], tgt.types)

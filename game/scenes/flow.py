@@ -2,8 +2,8 @@
 from game.battle.engine import Battle
 from game.scenes.base import MessageScene
 from game.scenes.battle_scene import BattleScene
+from game.scenes.evolution_scene import evolve_chain
 from game.scenes.screens import learn_chain
-from game.systems import evolution
 
 
 def after_battle(app, b, result, tid=None):
@@ -11,7 +11,7 @@ def after_battle(app, b, result, tid=None):
     st, d, msgs = app.state, app.data, []
     if result == "caught":
         where = st.add_creature(b.caught)
-        msgs.append(f"{b.caught.name} " + ("в команде." if where == "party" else "отправлен в заначку (команда полна)."))
+        msgs.append(f"{b.caught.name} " + ("в команде." if where == "party" else "отправлен в ПК (команда полна)."))
     elif result == "win" and tid:
         tr = d.trainers[tid]
         st.defeated.add(tid)
@@ -23,13 +23,6 @@ def after_battle(app, b, result, tid=None):
     elif result == "lose":
         st.heal_party()
         msgs.append("Тебя откачали. Всё как будто ничего и не было.")
-    for c in st.party:
-        into = evolution.level_evolution(c)
-        while into:
-            old = c.name
-            evolution.evolve(d, c, into)
-            msgs.append(f"{old} эволюционировал в {c.species['name']}!")
-            into = evolution.level_evolution(c)
     return msgs
 
 
@@ -37,8 +30,10 @@ def _run(app, battle, tid, on_finish):
     def done(result):
         msgs = after_battle(app, battle, result, tid)
 
-        def finish():   # после сообщений - предложить выучить ждущие приёмы, потом вернуть управление
-            learn_chain(app, [c for c in app.state.party if c.pending_moves], (lambda: on_finish(result)) if on_finish else None)
+        def finish():   # после сообщений: эволюции (с анимацией) -> выучка ждущих приёмов -> вернуть управление
+            def learn():
+                learn_chain(app, [c for c in app.state.party if c.pending_moves], (lambda: on_finish(result)) if on_finish else None)
+            evolve_chain(app, learn)
         if msgs:
             app.push(MessageScene(app, msgs, on_done=finish))
         else:
@@ -56,6 +51,6 @@ def start_wild(app, district, on_finish=None, foe=None):
 def start_trainer(app, tid, on_finish=None):
     st, d = app.state, app.data
     tr = d.trainers[tid]
-    party = [d.make_creature(sp, lv) for sp, lv in tr["party"]]
+    party = [d.make_creature(sp, lv, iv=tr.get("iv", 15)) for sp, lv in tr["party"]]
     st.seen.update(c.species_id for c in party)
     _run(app, Battle(d, st.party, party, wild=False, bag=st.bag, enemy_name=tr["name"]), tid, on_finish)

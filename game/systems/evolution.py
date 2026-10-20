@@ -8,6 +8,12 @@ def level_evolution(creature):
     return None
 
 
+def pending_level_evolution(creature):
+    """Эволюция по уровню, которую стоит предложить сейчас: если игрок отменил её на этом уровне - ждём следующего."""
+    into = level_evolution(creature)
+    return into if into and creature.declined_evolution_level != creature.level else None
+
+
 def item_evolution(creature, item_id):
     for ev in creature.species["evolutions"]:
         if ev["method"] == "item" and ev["item"] == item_id:
@@ -32,4 +38,13 @@ def evolve(data, creature, into_id):
     for lv, mv in creature.species["learnset"]:
         if lv == creature.level:
             creature.learn(data, mv)
+    return creature
+
+
+def apply(data, state, creature, into):
+    """Эволюция с записью в Бомждекс (вид считается встреченным и пойманным)."""
+    evolve(data, creature, into)
+    creature.declined_evolution_level = None
+    state.seen.add(into)
+    state.caught.add(into)
     return creature

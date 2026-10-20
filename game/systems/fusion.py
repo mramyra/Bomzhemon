@@ -34,6 +34,7 @@ def craft(data, state, fusion_id):
     lvl = min(100, sum(c.level for c in chosen) // len(chosen) + 3)
     for c in chosen:
         (state.party if c in state.party else state.storage).remove(c)
-    result = data.make_creature(f["result"], lvl)
+    result = data.make_creature(f["result"], lvl, iv={k: round(sum(c.iv[k] for c in chosen) / len(chosen)) for k in chosen[0].iv},
+                                nature=chosen[0].nature)
     state.add_creature(result)
     return result

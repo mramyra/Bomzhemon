@@ -79,6 +79,12 @@
     "min": 4,
     "max": 7,
     "weight": 5
+   },
+   {
+    "species": "cherepashonok",
+    "min": 3,
+    "max": 7,
+    "weight": 4
    }
   ],
   "item_spawns": [
@@ -124,6 +130,14 @@
    },
    {
     "item": "syringe",
+    "weight": 3
+   },
+   {
+    "item": "pizza_slice",
+    "weight": 6
+   },
+   {
+    "item": "ooze",
     "weight": 3
    }
   ]

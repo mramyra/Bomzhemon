@@ -2,6 +2,8 @@
 import pygame
 
 from game.scenes.base import MessageScene, Scene
+from game.scenes.evolution_scene import EvolutionScene
+from game.battle import stats as S
 from game.systems import evolution, fusion, moveset, trade
 from game.ui.sprites import creature_sprite
 from game.ui.widgets import INK, PAPER, SHADE, Menu, font, hp_bar, panel, text, wrap
@@ -99,7 +101,7 @@ class PartyScene(Scene):
                 text(surf, STATUS_RU[c.status], 410, y + 4, 12, (160, 60, 60), True)
             if c.pending_moves:
                 text(surf, "новый приём!", 380, y + 24, 12, (40, 110, 40), True)
-        text(surf, f"В заначке: {len(st.storage)}", 16, 302, 12)
+        text(surf, f"В ПК: {len(st.storage)}", 16, 302, 12)
         if self.mode == "actions":
             panel(surf, (330, 40 + self.menu.i * 46, 130, 74))
             self.actions.draw(surf, 340, 46 + self.menu.i * 46, row_h=22, size=14)
@@ -111,13 +113,18 @@ class CreatureScene(Scene):
     blocks_console = True   # экран держит ссылки на состав команды: консоль поверх него не открываем
 
 
-    def __init__(self, app, idx):
+    def __init__(self, app, idx, pool=None):
         super().__init__(app)
         self.idx, self.page, self.mcur, self.swap_from = idx, 0, 0, None
+        self.pool = pool            # список существ (команда или ПК); по умолчанию - команда
+
+    @property
+    def creatures(self):
+        return self.pool if self.pool is not None else self.app.state.party
 
     @property
     def c(self):
-        return self.app.state.party[self.idx]
+        return self.creatures[self.idx]
 
     def _rows(self):
         return len(self.c.moves) + (1 if self.c.pending_moves else 0)
@@ -126,16 +133,16 @@ class CreatureScene(Scene):
         self.mcur = max(0, min(self.mcur, self._rows() - 1))
 
     def handle(self, a):
-        n = len(self.app.state.party)
+        n = len(self.creatures)
         if a == "back":
             if self.swap_from is not None:
                 self.swap_from = None
             else:
                 self.app.pop()
         elif a in ("left", "right"):
-            self.page ^= 1
+            self.page = (self.page + (1 if a == "right" else -1)) % 3
             self.swap_from, self.mcur = None, 0
-        elif self.page == 0:
+        elif self.page in (0, 2):
             if a == "up":
                 self.idx = (self.idx - 1) % n
             elif a == "down":
@@ -161,12 +168,12 @@ class CreatureScene(Scene):
         surf.fill(PAPER)
         self._clamp()
         d, c = self.app.data, self.c
-        for k, name in enumerate(["Характеристики", "Приёмы"]):
+        for k, name in enumerate(["Характеристики", "Приёмы", "Потенциал"]):
             x = 14 + k * 130
             panel(surf, (x, 6, 122, 26), (232, 240, 220) if k == self.page else (240, 238, 230))
             text(surf, name, x + 10, 11, 14, INK, k == self.page)
-        text(surf, f"{self.idx + 1}/{len(self.app.state.party)}", 440, 12, 13)
-        (self._draw_stats if self.page == 0 else self._draw_moves)(surf, d, c)
+        text(surf, f"{self.idx + 1}/{len(self.creatures)}", 430, 12, 13)
+        (self._draw_stats, self._draw_moves, self._draw_potential)[self.page](surf, d, c)
 
     def _draw_stats(self, surf, d, c):
         panel(surf, (10, 38, 460, 262))
@@ -185,12 +192,15 @@ class CreatureScene(Scene):
             text(surf, f"До следующего уровня: {need - got}", 130, 134, 13)
         else:
             text(surf, "Максимальный уровень", 130, 134, 13)
-        text(surf, f"Всего опыта: {c.exp}", 130, 150, 12, (90, 90, 90))
+        text(surf, "Характер: " + S.nature_label(c.nature), 130, 150, 12, (90, 90, 90))
         for k, (key, name) in enumerate(STAT_ROWS):
             y = 176 + k * 20
-            v = c.max_hp if key == "hp" else c.stat(key)
+            v = c.value(key)
             base = c.species["base"][key]
+            mult = S.nature_mult(c.nature, key)
             text(surf, name, 24, y, 14)
+            if mult != 100:
+                text(surf, "+" if mult > 100 else "-", 112, y, 14, (200, 60, 50) if mult > 100 else (60, 100, 190), True)
             text(surf, str(v), 140, y, 14, INK, True)
             exp_bar(surf, 180, y + 5, 80, min(1.0, v / 160))
             text(surf, f"база {base}", 266, y + 2, 11, (110, 110, 110))
@@ -198,7 +208,36 @@ class CreatureScene(Scene):
             text(surf, ln, 340, 176 + k * 16, 13)
         for k, ln in enumerate(moveset.evolution_hints(d, c)[:3]):
             text(surf, ln, 340, 244 + k * 16, 12, (90, 60, 40))
-        text(surf, "<- ->: приёмы   вверх/вниз: другое существо   X: назад", 20, 304, 11)
+        text(surf, "<- ->: вкладки   вверх/вниз: другое существо   X: назад", 20, 304, 11)
+
+    def _draw_potential(self, surf, d, c):
+        panel(surf, (10, 38, 460, 262))
+        surf.blit(creature_sprite(d, c.species_id, 64), (18, 44))
+        text(surf, f"{c.name}  Lv{c.level}", 92, 46, 17, INK, True)
+        name, up, down = S.NATURES[c.nature]
+        text(surf, f"Характер: {name}", 92, 68, 14)
+        if up:
+            text(surf, f"+{S.STAT_RU[up]}", 250, 68, 14, (200, 60, 50), True)
+            text(surf, f"-{S.STAT_RU[down]}", 340, 68, 14, (60, 100, 190), True)
+        else:
+            text(surf, "без бонусов", 250, 68, 14, (110, 110, 110))
+        text(surf, f"Потенциал (IV): {c.iv_total}/{S.IV_MAX * 6} - {S.iv_grade(c.iv_total)}", 92, 88, 13)
+        text(surf, f"Тренировка (EV): {c.ev_total}/{S.EV_TOTAL_MAX}", 92, 106, 13)
+        for x, label in ((24, "Характеристика"), (126, "IV (0-31)"), (254, "EV (0-252)"), (410, "Итого")):
+            text(surf, label, x, 128, 11, (110, 110, 110))
+        for k, key in enumerate(S.STAT_KEYS):
+            y = 144 + k * 19
+            text(surf, S.STAT_RU[key], 24, y, 13)
+            mult = S.nature_mult(c.nature, key)
+            if mult != 100:
+                text(surf, "+" if mult > 100 else "-", 108, y, 13, (200, 60, 50) if mult > 100 else (60, 100, 190), True)
+            exp_bar(surf, 126, y + 4, 84, c.iv[key] / S.IV_MAX)
+            text(surf, str(c.iv[key]), 216, y, 13, (40, 110, 40) if c.iv[key] == S.IV_MAX else INK, c.iv[key] == S.IV_MAX)
+            exp_bar(surf, 254, y + 4, 110, c.ev[key] / S.EV_STAT_MAX)
+            text(surf, str(c.ev[key]), 370, y, 13)
+            text(surf, str(c.value(key)), 420, y, 14, INK, True)
+        text(surf, "IV врождённые, у каждого существа свои. EV растут от побед над другими видами.", 20, 268, 11, (110, 110, 110))
+        text(surf, "<- ->: вкладки   вверх/вниз: другое существо   X: назад", 20, 304, 11)
 
     def _draw_moves(self, surf, d, c):
         for k in range(4):
@@ -224,7 +263,7 @@ class CreatureScene(Scene):
             panel(surf, (10, 262, 460, 40))
             for k, ln in enumerate(wrap(moveset.describe_move(d, sel), 440, 13)[:2]):
                 text(surf, ln, 20, 266 + k * 16, 13)
-        hint = "Выбери приём, с которым поменять местами. X - отмена" if self.swap_from is not None else "Z - переставить приёмы   <- ->: характеристики   X: назад"
+        hint = "Выбери приём, с которым поменять местами. X - отмена" if self.swap_from is not None else "Z - переставить приёмы   <- ->: вкладки   X: назад"
         text(surf, hint, 20, 304, 11)
 
 
@@ -427,9 +466,11 @@ class BagScene(Scene):
         elif it["kind"] == "evolution":
             into = evolution.item_evolution(c, item_id)
             if into:
-                old = c.name
-                evolution.evolve(d, c, into)
-                msg = f"{old} эволюционировал в {c.species['name']}!"
+                st.bag[item_id] -= 1            # предмет тратится сразу: отменить такую эволюцию нельзя
+                self.stage = "items"
+                self.refresh()
+                self.app.push(EvolutionScene(self.app, c, into, on_done=lambda ok: self.refresh(), cancellable=False, cause="item"))
+                return
         if msg:
             st.bag[item_id] -= 1
         self.app.push(MessageScene(self.app, [msg or "Это ничего не даст."]))
@@ -489,13 +530,14 @@ class TradeScene(Scene):
                 old = give.name
                 self.stage = "pick"
                 try:
-                    new = trade.execute(d, self.app.state, give, rs, into)
+                    new, into2 = trade.execute(d, self.app.state, give, rs, into, animate=True)
                 except ValueError:      # пока окно было открыто, состав команды изменился
                     self.refresh()
                     self.app.push(MessageScene(self.app, ["Меняла: Что-то поменялось, давай заново."]))
                     return
                 self.refresh()
-                self.app.push(MessageScene(self.app, [f"Меняла забирает {old} и отдаёт {d.species[rs]['name']}.", f"{d.species[rs]['name']} тут же превращается: {new.name}!"]))
+                self.app.push(MessageScene(self.app, [f"Меняла забирает {old} и отдаёт {d.species[rs]['name']}.", "И тут началось..."],
+                                           on_done=lambda: self.app.push(EvolutionScene(self.app, new, into2, on_done=lambda ok: self.refresh(), cancellable=False, cause="trade"))))
 
     def draw(self, surf):
         surf.fill(PAPER)

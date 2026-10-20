@@ -55,6 +55,8 @@ def describe_move(data, move_id):
         parts.append(f"Шанс {fx['confuse']}%: ввести цель в ступор")
     if "flinch" in fx:
         parts.append(f"Шанс {fx['flinch']}%: цель в страхе и пропустит ход")
+    if "heal" in fx:
+        parts.append(f"Восстанавливает {fx['heal']}% HP себе")
     if "stat" in fx:
         s = fx["stat"]
         who = "цели" if s["who"] == "foe" else "себе"
@@ -78,9 +80,10 @@ def species_evolution_hints(data, species_id):
             out.append(f"Обмен на {data.species[e['partner']]['name']} - {into}")
     for f in data.fusions:
         if species_id in f["inputs"]:
-            out.append(f"Крафт {f['inputs'][species_id]} шт. - {data.species[f['result']]['name']}")
+            recipe = " + ".join(f"{n} {data.species[sp]['name']}" for sp, n in f["inputs"].items())
+            out.append(f"Крафт: {recipe} - {data.species[f['result']]['name']}")
     return out
 
 
 def evolution_hints(data, c):
-    return ["Эволюция: " + h for h in species_evolution_hints(data, c.species_id)]
+    return [h if h.startswith("Крафт") else "Эволюция: " + h for h in species_evolution_hints(data, c.species_id)]

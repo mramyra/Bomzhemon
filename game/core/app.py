@@ -1,9 +1,9 @@
 """Приложение: окно, полный экран, стек сцен, главный цикл."""
-import sys
 
 import pygame
 
 from game.core.data import GameData
+from game.core.events import EventBus
 from game.core.input import key_action
 
 INTERNAL = (480, 320)   # внутреннее разрешение (3:2); дальше масштабируется на окно/экран
@@ -20,6 +20,7 @@ class App:
         self.canvas = pygame.Surface(INTERNAL)
         self.clock = pygame.time.Clock()
         self.data = GameData()
+        self.events = EventBus()        # шина событий (звук и эффекты подписываются здесь)
         self.state = None               # PlayerState, появляется после новой игры / загрузки
         self.stack = []
         self.held = set()               # удерживаемые направления (для ходьбы)
@@ -58,13 +59,18 @@ class App:
     def replace(self, scene):
         self.stack = [scene]
 
+    def quit(self):
+        """Выйти из игры: главный цикл завершится."""
+        self.stack.clear()
+
     def run(self):
         while self.stack:
             dt = min(self.clock.tick(60) / 1000, 0.1)
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+                    from game.scenes.exit_flow import request_quit
+                    request_quit(self)
+                    continue
                 if e.type == pygame.KEYDOWN and (e.key == pygame.K_F11 or (e.key == pygame.K_RETURN and e.mod & pygame.KMOD_ALT)):
                     self.toggle_fullscreen()
                     continue

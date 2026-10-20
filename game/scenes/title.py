@@ -1,5 +1,6 @@
 from game.scenes.base import MessageScene, Scene
 from game.scenes.debug_hub import HubScene
+from game.scenes.saveload import SlotScene, fmt_time, slot_title
 from game.scenes.world import WorldScene
 from game.systems import save
 from game.systems.state import PlayerState
@@ -9,37 +10,65 @@ from game.ui.widgets import INK, PAPER, Menu, panel, text
 STARTERS = ["khomechennok", "shchenok", "kotenok"]
 
 
+def enter_world(app, state):
+    app.state = state
+    app.held.clear()
+    app.replace(WorldScene(app))
+    if state.loaded_from_backup:
+        app.push(MessageScene(app, ["Основной файл сохранения был повреждён, загружена резервная копия."]))
+
+
+def go_title(app):
+    """Выход в главное меню: состояние игры сбрасывается (несохранённое теряется)."""
+    app.state = None
+    app.held.clear()
+    app.replace(TitleScene(app))
+
+
 class TitleScene(Scene):
     def __init__(self, app):
         super().__init__(app)
-        self.items = ["Новая игра"] + (["Продолжить"] if save.exists(1) else []) + ["Отладочный хаб", "Выход"]
+        slots = [(s, m) for s, m in save.list_slots(data=app.data) if m is not None]
+        self.latest = save.latest_slot(data=app.data)
+        self.items = (["Продолжить"] if self.latest is not None else []) + (["Загрузить"] if slots else []) + ["Новая игра", "Отладочный хаб", "Выход"]
         self.menu = Menu(self.items)
 
     def handle(self, a):
         if self.menu.handle(a) != "ok":
             return
-        it = self.items[self.menu.i]
-        if it == "Новая игра":
-            self.app.push(StarterScene(self.app))
-        elif it == "Продолжить":
-            self.app.state = save.load(self.app.data, 1)
-            self.app.replace(WorldScene(self.app))
+        it, app = self.items[self.menu.i], self.app
+        if it == "Продолжить":
+            try:
+                st = save.load(app.data, self.latest)
+            except save.SaveError as e:
+                app.push(MessageScene(app, [f"Не удалось загрузить: {e}."]))
+                return
+            enter_world(app, st)
+        elif it == "Загрузить":
+            app.push(SlotScene(app, "load", on_done=lambda st: enter_world(app, st)))
+        elif it == "Новая игра":
+            app.push(StarterScene(app))
         elif it == "Отладочный хаб":
-            d, st = self.app.data, PlayerState()
+            d, st = app.data, PlayerState()
             st.add_creature(d.make_creature("shchenok", 12))
             st.add_creature(d.make_creature("krysa", 10))
             st.bag.update({"box": 10, "bread_crust": 3, "palto": 1, "bin_lid": 1, "syringe": 1})
-            self.app.state = st
-            self.app.replace(HubScene(self.app))
+            app.state = st
+            app.replace(HubScene(app))
         else:
-            self.app.stack.clear()
+            app.quit()
 
     def draw(self, surf):
         surf.fill(PAPER)
-        text(surf, "БОМЖЕМОН", 140, 50, 48, INK, True)
-        text(surf, "ловить всех. коробок хватит.", 150, 110, 16)
-        self.menu.draw(surf, 190, 170, row_h=28, size=18)
-        text(surf, "F11 - полный экран", 8, 300, 12)
+        text(surf, "БОМЖЕМОН", 140, 40, 48, INK, True)
+        text(surf, "ловить всех. коробок хватит.", 150, 98, 16)
+        self.menu.draw(surf, 190, 150, row_h=28, size=18)
+        if self.items[self.menu.i] == "Продолжить":
+            m = save.read_meta(self.latest, data=self.app.data)
+            if m and m.get("ok"):
+                party = ", ".join(f"{p['name']} {p['level']}" for p in m["party"][:3])
+                text(surf, f"{slot_title(self.latest)}: {party}  |  {m.get('location') or '-'}  |  {fmt_time(m['play_seconds'])}", 20, 282, 12)
+        text(surf, "F11 - полный экран", 8, 302, 12)
 
 
 class StarterScene(Scene):
@@ -54,8 +83,7 @@ class StarterScene(Scene):
         elif r == "ok":
             st = PlayerState()
             st.add_creature(self.app.data.make_creature(STARTERS[self.menu.i], 5))
-            self.app.state = st
-            self.app.replace(WorldScene(self.app))
+            enter_world(self.app, st)
             self.app.push(MessageScene(self.app, ["Ты бомж. Из имущества: картонные коробки и характер.", "Лови всех, качайся, собирай значки у бомжлидеров.", "Ходить: стрелки. Действие: Z. Меню: X."]))
 
     def draw(self, surf):
