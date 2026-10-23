@@ -133,7 +133,7 @@ class Console:
     def pool(self, kind):
         d = self.data
         return {"stat": list(S.STAT_KEYS) + ["all"], "nature": list(S.NATURES),"species": list(d.species), "item": list(d.items), "move": list(d.moves), "trainer": list(d.trainers),
-                "status": STATUSES, "list": ["species", "items", "moves", "trainers", "types", "natures"], "dex": ["all", "clear"]}.get(kind, [])
+                "status": STATUSES, "list": ["species", "items", "moves", "trainers", "types", "natures"], "district": list(d.districts), "dex": ["all", "clear"]}.get(kind, [])
 
     # ------------------------------------------------------------ автодополнение
     def complete(self, line):
@@ -539,7 +539,8 @@ def c_trainer(con, a):
 @cmd("tp", "tp <x> <y>", "Телепорт по карте (клетки). Без аргументов - показать позицию.", ("int", "int"))
 def c_tp(con, a):
     if not a:
-        return [f"Позиция: {con.hook('pos')()}"]
+        pos = con.hook("pos")()
+        return [f"Позиция: {pos[0]} ({pos[1]}, {pos[2]})" if len(pos) == 3 else f"Позиция: {pos}"]
     if len(a) < 2:
         raise CommandError("tp <x> <y>")
     x, y = con.num(a[0], 0, 999, "x"), con.num(a[1], 0, 999, "y")
@@ -551,6 +552,16 @@ def c_pc(con, a):
     con.state            # нужна идущая игра
     con.hook("pc")()
     return ["ПК открыт."]
+
+
+@cmd("map", "map [район] [точка]", "Без аргументов - список районов, с районом - перейти туда (без затемнения). Точка - имя spawn на карте.", ("district", "spawn"))
+def c_map(con, a):
+    d = con.data
+    if not a:
+        return [", ".join(f"{k} ({v['name']})" for k, v in d.districts.items())]
+    did = con.resolve(a[0], d.districts, "Район")
+    ok = con.hook("travel")(did, a[1] if len(a) > 1 else None)
+    return [f"Переход: {d.districts[did]['name']}." if ok else "Не получилось перейти."]
 
 
 @cmd("save", "save", "Сохранить игру в слот 1.")

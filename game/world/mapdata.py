@@ -3,7 +3,8 @@
 Требования к карте в Tiled (Tile Layer Format = CSV, размер тайла 32x32):
   - тайловый слой "ground" (обязателен); необязательный "top" (рисуется поверх игрока, коллизий нет)
   - группа объектов "objects": прямоугольники 32x32 с полем Type (class):
-      player_start, barrel, dumpster, item_spot, trainer, leader, trader (Меняла), pc (ПК)
+      player_start, barrel, dumpster, item_spot, trainer, leader, trader (Меняла), pc (ПК),
+      exit (выход в другую локацию: свойства target, spawn, requires_badge, blocked_text), spawn (точка появления, имя = поле Name)
     у trainer/leader свойство trainer_id (ключ из data/trainers.json), свойство facing (up/down/left/right)
   - свойства тайлов в тайлсете: solid (bool) - нельзя пройти; encounter (bool) - здесь встречаются существа
 """
@@ -62,6 +63,14 @@ class MapData:
 
     def object_at(self, x, y):
         return next((o for o in self.objects if o.x == x and o.y == y and o.type != "item_spot"), None)
+
+    def exit_at(self, x, y):
+        """Выход в другую локацию на этой клетке (объект типа exit: target, spawn, requires_badge, blocked_text)."""
+        return next((o for o in self.objects if o.type == "exit" and (o.x, o.y) == (x, y)), None)
+
+    def spawn(self, name):
+        """Точка появления с таким именем (объект типа spawn)."""
+        return next((o for o in self.objects if o.type == "spawn" and o.name == name), None)
 
     def inside(self, x, y):
         return 0 <= x < self.w and 0 <= y < self.h

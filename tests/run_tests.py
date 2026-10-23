@@ -193,26 +193,43 @@ def test_balance_bounds():
 
 
 def test_map_valid():
+    """Все карты из data/districts.json: объекты доступны, выходы и точки появления согласованы между картами."""
+    from game.core import paths
     from game.world.mapdata import MapData, DIRS
-    m = MapData.load(Path(__file__).resolve().parents[1] / "maps" / "dump.tmj")
-    assert m.tileset and m.tileset["image"].exists(), "нет картинки тайлсета"
-    assert len(m.objects_of("player_start")) == 1 and len(m.objects_of("barrel")) >= 1
-    assert len(m.objects_of("dumpster")) >= 6 and len(m.objects_of("item_spot")) >= 15
-    assert len(m.objects_of("pc")) == 1 and len(m.objects_of("trader")) == 1
-    reach = m.reachable()
-    assert not m.blocked(*m.start())
-    for o in m.objects:                     # у каждого объекта есть доступный подход, предметы достижимы
-        if o.type == "item_spot":
-            assert (o.x, o.y) in reach, f"предмет {o.id} недостижим"
-        elif o.blocking:
-            assert any((o.x + dx, o.y + dy) in reach for dx, dy in DIRS.values()), f"{o.name} {o.id}: нет подхода"
-        if o.type in ("trainer", "leader"):
-            assert o.props["trainer_id"] in D.trainers
-            assert o.props.get("facing") in DIRS
-    ids = {o.props["trainer_id"] for o in m.objects_of("trainer", "leader")}
-    assert "leader_dump" in ids
-    enc = sum(m.prop(x, y, "encounter") and (x, y) in reach for x in range(m.w) for y in range(m.h))
-    assert enc > 50, "слишком мало тайлов для встреч"
+    maps = {did: MapData.load(paths.asset(info["map"])) for did, info in D.districts.items()}
+    assert {"dump", "vokzal"} <= set(maps)
+    badges = {t["badge"] for t in D.trainers.values() if t.get("badge")}
+    for did, m in maps.items():
+        assert m.tileset and m.tileset["image"].exists(), f"{did}: нет картинки тайлсета"
+        assert len(m.objects_of("player_start")) == 1 and len(m.objects_of("barrel")) >= 1 and len(m.objects_of("pc")) == 1, did
+        assert len(m.objects_of("dumpster")) >= 6 and len(m.objects_of("item_spot")) >= 15, did
+        assert not m.blocked(*m.start()), did
+        reach = m.reachable()
+        for o in m.objects:                     # у каждого объекта есть доступный подход, предметы и выходы достижимы
+            if o.type in ("item_spot", "exit", "spawn"):
+                assert (o.x, o.y) in reach, f"{did}: {o.type} {o.name} {o.id} недостижим"
+            elif o.blocking:
+                assert any((o.x + dx, o.y + dy) in reach for dx, dy in DIRS.values()), f"{did}: {o.name} {o.id}: нет подхода"
+            if o.type in ("trainer", "leader"):
+                assert o.props["trainer_id"] in D.trainers and o.props.get("facing") in DIRS
+        leaders = [o.props["trainer_id"] for o in m.objects_of("leader")]
+        assert len(leaders) == 1 and D.trainers[leaders[0]]["class"] == "leader" and D.trainers[leaders[0]]["badge"]
+        enc = sum(m.prop(x, y, "encounter") and (x, y) in reach for x in range(m.w) for y in range(m.h))
+        assert enc > 50, f"{did}: слишком мало тайлов для встреч"
+        # выходы: цель - существующий район, точка появления есть на целевой карте, значок существует
+        for ex in m.objects_of("exit"):
+            tgt = ex.props["target"]
+            assert tgt in maps and maps[tgt].spawn(ex.props["spawn"]), f"{did}: выход {ex.name} ведёт в никуда"
+            need = ex.props.get("requires_badge")
+            assert not need or need in badges, f"{did}: значок {need} никто не выдаёт"
+            assert ex.x in (0, m.w - 1) or ex.y in (0, m.h - 1), "выход должен стоять на краю карты"
+            assert m.prop(ex.x, ex.y, "solid") is False
+    assert len(maps["dump"].objects_of("trader")) == 1
+    # две локации связаны туда и обратно
+    assert maps["dump"].objects_of("exit")[0].props["target"] == "vokzal" and maps["vokzal"].objects_of("exit")[0].props["target"] == "dump"
+    assert maps["dump"].objects_of("exit")[0].props.get("requires_badge") == "badge_dump"
+    ids = {o.props["trainer_id"] for m in maps.values() for o in m.objects_of("trainer", "leader")}
+    assert {"leader_dump", "leader_vokzal", "granny_zina", "porter_vasya"} <= ids
 
 
 def test_exp_progress():
@@ -324,6 +341,10 @@ def test_console_hooks_and_errors():
     con.run("give krysa 5")
     con.run("battle tarakan 12"); con.run("trainer leader_dump"); con.run("tp 4 5"); con.run("tp"); con.run("close")
     assert calls == [("battle", "tarakan", 12), ("trainer", "leader_dump"), ("tp", 4, 5), "close"], calls
+    con.hooks["travel"] = lambda district, spawn=None: calls.append(("travel", district, spawn)) or True
+    con.run("map vokzal from_dump"); con.run("map Вокзал"); con.run("map")
+    assert calls[-2:] == [("travel", "vokzal", "from_dump"), ("travel", "vokzal", None)] and "vokzal (Вокзал)" in con.log[-1]
+    assert "Ошибка" in con.run("map nowhere")[-1]
     assert any("Позиция" in l for l in con.log)
     con.get_state = lambda: None
     assert "Сначала начни игру" in con.run("party")[-1]

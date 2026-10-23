@@ -3,8 +3,6 @@ from game.scenes.base import ChoiceScene, MessageScene
 from game.scenes.saveload import SlotScene
 from game.systems import save
 
-DISTRICT = "dump"
-
 
 def _world(app):
     return next((s for s in app.stack if getattr(s, "is_world", False)), None)
@@ -20,7 +18,7 @@ def _exit(app, to_menu):
 
 def _save_and_exit(app, world, to_menu):
     st = app.state
-    loc = app.data.districts.get(DISTRICT, {}).get("name", "")
+    loc = app.data.districts.get(world.district, {}).get("name", "")
     if st.slot:                 # слот этой сессии известен - пишем в него
         try:
             world.sync_pos()

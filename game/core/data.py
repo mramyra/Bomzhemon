@@ -97,6 +97,10 @@ class GameData:
                 if sp not in self.species:
                     errs.append(f"trainer {tid}: {sp}")
         for did, d in self.districts.items():
+            if "name" not in d or not d.get("map"):
+                errs.append(f"district {did}: нужны поля name и map")
+            elif not paths.asset(d["map"]).exists():
+                errs.append(f"district {did}: нет файла карты {d['map']}")
             for e in d["encounters"]:
                 if e["species"] not in self.species:
                     errs.append(f"district {did}: {e['species']}")

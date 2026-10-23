@@ -6,7 +6,7 @@ from game.scenes import flow
 from game.scenes.base import Scene
 from game.scenes.evolution_scene import EvolutionScene
 from game.scenes.pc import PCScene
-from game.scenes.world import DISTRICT
+from game.scenes.world import DEFAULT_DISTRICT
 from game.systems import save
 from game.ui.widgets import mono
 
@@ -45,7 +45,7 @@ class ConsoleScene(Scene):
         def battle(foe):
             w = self._world()
             self.close()
-            flow.start_wild(app, DISTRICT, w._after_battle if w else None, foe=foe)
+            flow.start_wild(app, w.district if w else DEFAULT_DISTRICT, w._after_battle if w else None, foe=foe)
 
         def trainer(tid):
             w = self._world()
@@ -69,7 +69,8 @@ class ConsoleScene(Scene):
         hooks = {"close": self.close, "battle": battle, "trainer": trainer, "save": do_save, "pc": open_pc, "evolution_anim": evo_anim}
         if self._world():
             hooks["teleport"] = lambda x, y: self._world().teleport(x, y)
-            hooks["pos"] = lambda: (self._world().x, self._world().y)
+            hooks["pos"] = lambda: (self._world().district, self._world().x, self._world().y)
+            hooks["travel"] = lambda district, spawn=None: self._world().travel(district, spawn)
         return hooks
 
     # ---------------------------------------------------------------- ввод

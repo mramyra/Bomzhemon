@@ -28,20 +28,41 @@ def go_title(app):
 class TitleScene(Scene):
     def __init__(self, app):
         super().__init__(app)
+        self.menu, self.items, self.latest, self._poll = Menu([""]), [], None, 0.0
+        self._rebuild()
+
+    def _rebuild(self):
+        """Пересобирает меню по тому, что реально лежит в saves/ (слоты можно удалить в «Загрузить»)."""
+        app = self.app
+        keep = self.items[self.menu.i] if self.items else None
         slots = [(s, m) for s, m in save.list_slots(data=app.data) if m is not None]
         self.latest = save.latest_slot(data=app.data)
         self.items = (["Продолжить"] if self.latest is not None else []) + (["Загрузить"] if slots else []) + ["Новая игра", "Отладочный хаб", "Выход"]
         self.menu = Menu(self.items)
+        if keep in self.items:
+            self.menu.i = self.items.index(keep)
+
+    def update(self, dt):
+        self._poll += dt
+        if self._poll >= 1.0:
+            self._poll = 0.0
+            self._rebuild()
 
     def handle(self, a):
         if self.menu.handle(a) != "ok":
             return
         it, app = self.items[self.menu.i], self.app
         if it == "Продолжить":
+            slot = save.latest_slot(data=app.data)         # актуальный слот на момент нажатия
             try:
-                st = save.load(app.data, self.latest)
+                st = save.load(app.data, slot) if slot is not None else None
             except save.SaveError as e:
                 app.push(MessageScene(app, [f"Не удалось загрузить: {e}."]))
+                self._rebuild()
+                return
+            if st is None:
+                app.push(MessageScene(app, ["Сохранений не осталось."]))
+                self._rebuild()
                 return
             enter_world(app, st)
         elif it == "Загрузить":

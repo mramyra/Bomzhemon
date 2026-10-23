@@ -67,6 +67,7 @@ from pathlib import Path  # noqa: E402
 SAVE.SAVE_DIR = Path(tempfile.mkdtemp(prefix="bomzhemon_smoke_"))   # тест пишет только во временную папку
 import game.scenes.title as TITLE  # noqa: E402
 import game.scenes.exit_flow as EXIT  # noqa: E402
+import game.scenes.transition as TRANS  # noqa: E402
 import game.scenes.evolution_scene as EVOS  # noqa: E402
 EVOS.creature_sprite = SP.creature_sprite
 import game.scenes.pc as PCS  # noqa: E402
@@ -179,7 +180,7 @@ def main():
 
     cmds = ["help", "give krysa 16", "party", "checkevo", "give kokonishche 10", "useitem 3 palto", "evolve 1 krysiny_korol", "exp 1 5000",
             "give shchenok 30 5", "tp 4 4", "tp", "info 1", "storage", "dex all", "heal", "list species", "give tr", "боевая", "give ptenets 12", "trade 2", "trade 2 krysa", "trade 1",
-            "battle tarakan 8", "trainer granny_zina", "save"]
+            "battle tarakan 8", "trainer granny_zina", "map vokzal", "map dump from_vokzal", "map", "map нету", "save"]
     for i in range(60):
         app = FakeApp()
         w = WORLD.WorldScene(app)
@@ -278,6 +279,18 @@ def main():
     assert not SAVE.slot_path(1).exists()
     slots.menu.i = 2; press(app, "ok", "ok")                                              # слот 2 -> Загрузить
     assert isinstance(app.stack[-1], WORLD.WorldScene) and app.state.money == 321
+    # слот удалили в списке слотов: "Продолжить" исчезает, а устаревший пункт не роняет игру
+    app = FakeApp(); app.state = None
+    SAVE.save(FakeApp().state, 2)
+    app.replace(TITLE.TitleScene(app))
+    title = app.stack[-1]
+    assert title.items[0] == "Продолжить"
+    SAVE.delete(2)
+    title.menu.i = 0
+    press(app, "ok")                                                                      # ещё "Продолжить" в меню, но сохранений уже нет
+    assert type(app.stack[-1]).__name__ == "MessageScene" and "Сохранений не осталось" in app.stack[-1].lines[0]
+    press(app, "ok")
+    assert "Продолжить" not in title.items and isinstance(app.stack[-1], TITLE.TitleScene)
     print("OK: сценарий сохранения/выхода/продолжения")
     # случайные нажатия по титульному экрану и слотам с разными файлами (целый, битый, старый состав)
     import json as _json
@@ -432,6 +445,79 @@ def main():
         if called:
             assert called[0] == (app.state.party[0].species_id == "khomyak") or sc.preview
     print("OK: анимация эволюции")
+    # переход между локациями: значок-замок, затемнение, возвращение, респаун, сохранение, миграция флагов
+    def drive(app, limit=100, dt=0.05):
+        for _ in range(limit):
+            top = app.stack[-1]
+            if not isinstance(top, TRANS.TransitionScene):
+                return
+            top.update(dt); top.draw(MagicMock())
+        raise AssertionError("затемнение не закончилось")
+
+    app = FakeApp(); app.state.party[:] = [app.data.make_creature("shchenok", 12)]
+    w = WORLD.WorldScene(app); app.replace(w)
+    assert w.district == "dump" and w.banner > 0
+    ex = w.map.objects_of("exit")[0]
+    arrive = w.map.spawn("from_vokzal")
+    w.x, w.y = arrive.x, arrive.y
+    app.held = {"right"}; w.last_dir = "right"
+    w.update(0.0)                                                   # значка нет - не пускают
+    assert isinstance(app.stack[-1], SCREENS.MessageScene) and w.moving is None and not app.held and w.district == "dump"
+    assert "Михалыч" in app.stack[-1].lines[0]
+    press(app, "ok")
+    app.state.badges.append("badge_dump")
+    app.held = {"right"}; w.last_dir = "right"
+    w.update(0.0)
+    assert w.moving == (1, 0)
+    w.update(1.0)                                                   # дошли до тайла выхода -> затемнение
+    assert isinstance(app.stack[-1], TRANS.TransitionScene)
+    drive(app)
+    assert app.stack == [w] and w.district == "vokzal" and w.banner > 0
+    sp = w.map.spawn("from_dump")
+    assert (w.x, w.y) == (sp.x, sp.y) and app.state.pos == {"map": "vokzal", "x": sp.x, "y": sp.y}
+    assert w.face == "right" and not w.map.blocked(w.x, w.y)
+    assert w.items and set(w.items) != set()                        # в новой локации свои предметы
+    # предметы и баки отмечаются отдельно по районам
+    spot = next(o for o in w.map.objects_of("item_spot") if o.id in w.items)
+    w.x, w.y = spot.x, spot.y
+    w._picked().append(spot.id)
+    assert spot.id in app.state.flags["picked"]["vokzal"] and spot.id not in app.state.flags["picked"].get("dump", [])
+    # сохранение внутри вокзала и загрузка
+    w.sync_pos()
+    SAVE.save(app.state, 1)
+    st2 = SAVE.load(app.data, 1)
+    app2 = FakeApp(); app2.state = st2
+    w2 = WORLD.WorldScene(app2)
+    assert w2.district == "vokzal" and (w2.x, w2.y) == (w.x, w.y) and w2.items == w.items
+    SAVE.delete(1)                                                  # не мешаем следующим сценариям
+    # респаун после поражения возвращает к бочке в другом районе
+    dump_start = None
+    app.state.flags["checkpoint"] = {"map": "dump", "x": 5, "y": 3}
+    w._after_battle("lose")
+    assert w.district == "dump" and (w.x, w.y) in ((5, 3), w.map.start()) and app.state.pos["map"] == "dump"
+    # обратный путь: вокзал -> свалка без значка не нужен
+    w.travel("vokzal", "from_dump")
+    ex2 = w.map.objects_of("exit")[0]
+    assert ex2.props["target"] == "dump" and "requires_badge" not in ex2.props
+    app.state.badges.clear()
+    w.x, w.y = w.map.spawn("from_dump").x, w.map.spawn("from_dump").y
+    app.held = {"left"}; w.last_dir = "left"
+    w.update(0.0); w.update(1.0)
+    assert isinstance(app.stack[-1], TRANS.TransitionScene)
+    drive(app)
+    back = w.map.spawn("from_vokzal")
+    assert w.district == "dump" and (w.x, w.y) == (back.x, back.y)
+    # старые сохранения: флаги-списки -> по районам; неизвестный район -> свалка
+    app = FakeApp(); app.state.flags.update({"picked": [1, 2], "opened": [3], "checkpoint": [5, 6]})
+    app.state.pos = {"map": "no_such_district", "x": 9, "y": 9}
+    w = WORLD.WorldScene(app)
+    assert app.state.flags["picked"] == {"dump": [1, 2]} and app.state.flags["opened"] == {"dump": [3]}
+    assert app.state.flags["checkpoint"] == {"map": "dump", "x": 5, "y": 6}
+    assert w.district == "dump" and (w.x, w.y) == w.map.start()
+    app.state.flags["checkpoint"] = "мусор"
+    WORLD.migrate_flags(app.state)
+    assert "checkpoint" not in app.state.flags
+    print("OK: переход между локациями")
     # закрытие окна (крестик / Alt+F4)
     app = FakeApp(); app.state = None
     app.replace(TITLE.TitleScene(app))

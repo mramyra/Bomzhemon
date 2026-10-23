@@ -1,5 +1,6 @@
 {
  "dump": {
+  "map": "maps/dump.tmj",
   "name": "Свалка",
   "encounters": [
    {
@@ -135,6 +136,150 @@
    {
     "item": "pizza_slice",
     "weight": 6
+   },
+   {
+    "item": "ooze",
+    "weight": 3
+   }
+  ]
+ },
+ "vokzal": {
+  "name": "Вокзал",
+  "map": "maps/vokzal.tmj",
+  "encounters": [
+   {
+    "species": "yaitso",
+    "min": 8,
+    "max": 12,
+    "weight": 18
+   },
+   {
+    "species": "ptenets",
+    "min": 9,
+    "max": 14,
+    "weight": 16
+   },
+   {
+    "species": "strannoe_yaitso",
+    "min": 8,
+    "max": 12,
+    "weight": 10
+   },
+   {
+    "species": "tarakan",
+    "min": 8,
+    "max": 13,
+    "weight": 10
+   },
+   {
+    "species": "nedopchel",
+    "min": 8,
+    "max": 13,
+    "weight": 10
+   },
+   {
+    "species": "kotenok",
+    "min": 8,
+    "max": 12,
+    "weight": 8
+   },
+   {
+    "species": "kot",
+    "min": 11,
+    "max": 16,
+    "weight": 6
+   },
+   {
+    "species": "gusenitsa",
+    "min": 8,
+    "max": 12,
+    "weight": 8
+   },
+   {
+    "species": "cherepashonok",
+    "min": 9,
+    "max": 14,
+    "weight": 5
+   },
+   {
+    "species": "pleshipes",
+    "min": 9,
+    "max": 14,
+    "weight": 5
+   },
+   {
+    "species": "cheremshkot",
+    "min": 9,
+    "max": 14,
+    "weight": 5
+   },
+   {
+    "species": "enot",
+    "min": 10,
+    "max": 15,
+    "weight": 6
+   },
+   {
+    "species": "lisenok",
+    "min": 10,
+    "max": 14,
+    "weight": 6
+   },
+   {
+    "species": "pes",
+    "min": 12,
+    "max": 16,
+    "weight": 4
+   }
+  ],
+  "item_spawns": [
+   {
+    "item": "box",
+    "weight": 40
+   },
+   {
+    "item": "bread_crust",
+    "weight": 18
+   },
+   {
+    "item": "pizza_slice",
+    "weight": 10
+   },
+   {
+    "item": "instant_noodles",
+    "weight": 10
+   },
+   {
+    "item": "milk",
+    "weight": 8
+   },
+   {
+    "item": "tin_can",
+    "weight": 6
+   },
+   {
+    "item": "maggots",
+    "weight": 6
+   },
+   {
+    "item": "bin_lid",
+    "weight": 6
+   },
+   {
+    "item": "bait",
+    "weight": 6
+   },
+   {
+    "item": "molochko",
+    "weight": 5
+   },
+   {
+    "item": "palto",
+    "weight": 5
+   },
+   {
+    "item": "syringe",
+    "weight": 4
    },
    {
     "item": "ooze",

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "D:\code\phitonus\opopus\labs\lab3\Bomzhemon\main.py", line 13, in main
+    app.run()
+  File "D:\code\phitonus\opopus\labs\lab3\Bomzhemon\game\core\app.py", line 105, in run
+    self._present()
+KeyboardInterrupt
