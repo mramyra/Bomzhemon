@@ -54,3 +54,10 @@ def start_trainer(app, tid, on_finish=None):
     party = [d.make_creature(sp, lv, iv=tr.get("iv", 15)) for sp, lv in tr["party"]]
     st.seen.update(c.species_id for c in party)
     _run(app, Battle(d, st.party, party, wild=False, bag=st.bag, enemy_name=tr["name"]), tid, on_finish)
+
+
+def start_custom(app, player_party, enemy_party, on_finish=None):
+    """Запуск кастомного боя с указанными командами."""
+    st, d = app.state, app.data
+    st.seen.update(c.species_id for c in enemy_party)
+    _run(app, Battle(d, player_party, enemy_party, wild=True, bag=st.bag, enemy_name="Кастомный враг"), None, on_finish)

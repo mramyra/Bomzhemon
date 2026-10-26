@@ -3,6 +3,7 @@ from game.scenes.base import MessageScene, Scene
 from game.scenes import flow
 from game.scenes.pc import PCScene
 from game.scenes.screens import BagScene, CraftScene, DexScene, PartyScene
+from game.scenes.custom_battle import CustomBattleScene
 from game.systems import save
 from game.ui.widgets import INK, PAPER, Menu, text
 
@@ -12,7 +13,7 @@ DISTRICT = "dump"
 class HubScene(Scene):
     def __init__(self, app):
         super().__init__(app)
-        self.items = ["Дикий бой", "Бой с Михалычем (лидер)", "Бочка (вылечить всех)", "ПК", "Команда", "Сумка", "Бомждекс", "Крафт", "В главное меню"]
+        self.items = ["Дикий бой", "Кастомный бой", "Бой с Михалычем (лидер)", "Бочка (вылечить всех)", "ПК", "Команда", "Сумка", "Бомждекс", "Крафт", "В главное меню"]
         self.menu = Menu(self.items)
 
     def _guard(self):
@@ -28,22 +29,24 @@ class HubScene(Scene):
         if i == 0 and self._guard():
             flow.start_wild(app, DISTRICT)
         elif i == 1 and self._guard():
+            app.push(CustomBattleScene(app))
+        elif i == 2 and self._guard():
             st.defeated.discard("leader_dump")
             flow.start_trainer(app, "leader_dump")
-        elif i == 2:
+        elif i == 3:
             st.heal_party()
             app.push(MessageScene(app, ["Погрелся у бочки. Команда как новенькая."]))
-        elif i == 3:
-            app.push(PCScene(app))
         elif i == 4:
-            app.push(PartyScene(app))
+            app.push(PCScene(app))
         elif i == 5:
-            app.push(BagScene(app))
+            app.push(PartyScene(app))
         elif i == 6:
-            app.push(DexScene(app))
+            app.push(BagScene(app))
         elif i == 7:
-            app.push(CraftScene(app))
+            app.push(DexScene(app))
         elif i == 8:
+            app.push(CraftScene(app))
+        elif i == 9:
             from game.scenes.title import go_title
             go_title(app)
 
