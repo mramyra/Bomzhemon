@@ -157,9 +157,13 @@ class BattleScene(Scene):
         data = self.app.data
         e, p = self.disp["enemy"], self.disp["player"]
         if e and not e.get("gone"):
-            surf.blit(creature_sprite(data, e["species"], 96), (305, 28))
+            enemy_sprite = creature_sprite(data, e["species"], 96)
+            enemy_sprite = pygame.transform.flip(enemy_sprite, True, False)
+            surf.blit(enemy_sprite, (305, 28))
         if p and not p.get("gone"):
-            surf.blit(creature_sprite(data, p["species"], 120, back=True), (50, 98))
+            player_sprite = creature_sprite(data, p["species"], 120, back=True)
+            player_sprite = pygame.transform.flip(player_sprite, True, False)
+            surf.blit(player_sprite, (50, 98))
         if e:
             self._info(surf, (14, 14, 210, 56), e, False)
         if p:
